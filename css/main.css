@@ -63,3 +63,6 @@ details > summary {
   details > summary::-webkit-details-marker {
     display: none;
   }
+  .underline-on-hover:hover {
+    text-decoration: underline;
+}
