@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+	<html>
+		<head>
+			<title>{{ page.title }}</title>
+			<!-- link to main stylesheet -->
+			<link rel="stylesheet" type="text/css" href="/css/main.css">
+		</head>
+		<style>
+hr { 
+  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-width: 4px;
+} 
+			.footer {
+   position: static;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   text-align: center;
+}
+</style>
+		<body>
+			<!--<body style="background-image:url('/files/background.jpg');">-->
+			<nav>
+	    		<ul>
+	        		<li><a href="/">Home</a></li>
+		        	<li><a href="/research">Research</a></li>
+	        		<!--<li><a href="/education">Education</a></li>
+				<li><a href="/imp_links">Important links</a></li>-->
+				<li><a href="/about">About me</a></li>
+	    		</ul>
+			</nav>
+			<hr noshade>
+			<div class="container">
+			
+			{{ content }}
+			
+			</div><!-- /.container -->
+			<div class="footer">
+		        <hr noshade>
+	    		
+	        		<!--<li><a href="mailto:suraj.singh.khurana@gmail.com">suraj[dot]singh[dot]khurana@gmail[dot]com</a></li>-->
+	        		Address: Department of Mathematics, SRM University AP, Andhra Pradesh
+					<br>
+				Phone: available on request <br>
+				Email id:<a href="mailto:suraj.singh.khurana@gmail.com">suraj[dot]singh[dot]khurana@gmail[dot]com</a> <br>
+			
+				<a href="https://www.freecounterstat.com" title="web visitor counter"><img src="https://counter4.wheredoyoucomefrom.ovh/private/freecounterstat.php?c=263yh5bu48ydf5nah1x1g6xmhx5e2zbx" border="0" title="web visitor counter" alt="web visitor counter"></a>
+				
+			</div>
+		</body>
+		</html>
