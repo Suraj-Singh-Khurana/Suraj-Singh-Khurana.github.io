@@ -1,86 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirecting - Please count till 10</title>
-  <meta http-equiv="refresh" content="5;url=https://suraj-singh-khurana.vercel.app">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecting...</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
       display: flex;
-      justify-content: center;
       align-items: center;
-      font-family: 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #6bcfff, #6bff8c, #d46bff, #ff6bff);
-      background-size: 600% 600%;
-      animation: gradientShift 20s ease infinite;
-      color: white;
+      justify-content: center;
+      background: black;
+      color: #00ff41;
+      font-family: "Courier New", monospace;
       overflow: hidden;
+    }
+
+    .terminal {
       text-align: center;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .loader {
-      position: relative;
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: 8px solid rgba(255,255,255,0.2);
-      border-top-color: #fff;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 1.5rem auto;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .percentage {
       font-size: 1.5rem;
-      font-weight: bold;
+      white-space: pre;
+      text-shadow: 0 0 5px #00ff41, 0 0 10px #00ff41;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      animation: blink 0.7s infinite alternate;
+    }
+
+    @keyframes blink {
+      from { opacity: 1; }
+      to { opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <div>
-    <h1>Redirecting to Suraj's Portfolio</h1>
-    <div class="loader"></div>
-    <div class="percentage" id="percent">0%</div>
-  </div>
+  <div class="terminal" id="terminal"></div>
 
   <script>
-    let percentEl = document.getElementById("percent");
-    let percent = 0;
-    const duration = 5000; // 5s total
-    const intervalTime = 50; // update every 50ms
-    const step = (intervalTime / duration) * 100;
+    const redirectDelay = 4000; // total time before redirect (ms)
+    const targetUrl = "https://suraj-singh-khurana.vercel.app/";
 
-    let interval = setInterval(() => {
-      percent += step;
-      if (percent >= 100) {
-        percent = 100;
-        clearInterval(interval);
+    const terminal = document.getElementById("terminal");
+    const lines = [
+      "Initializing system...",
+      "Bypassing firewalls...",
+      "Loading encrypted portfolio files...",
+      "Decrypting access...",
+      "Redirecting to main server..."
+    ];
+
+    let lineIndex = 0;
+    let charIndex = 0;
+
+    function typeLine() {
+      if (lineIndex < lines.length) {
+        if (charIndex < lines[lineIndex].length) {
+          terminal.innerHTML += lines[lineIndex][charIndex];
+          charIndex++;
+          setTimeout(typeLine, 50); // typing speed
+        } else {
+          terminal.innerHTML += "\n";
+          lineIndex++;
+          charIndex = 0;
+          setTimeout(typeLine, 300); // pause between lines
+        }
       }
-      percentEl.textContent = Math.floor(percent) + "%";
-    }, intervalTime);
+    }
 
-    // Fallback JS redirect (if meta refresh fails)
+    typeLine();
+
+    // redirect after delay
     setTimeout(() => {
-      window.location.href = "https://suraj-singh-khurana.vercel.app";
-    }, duration);
+      window.location.href = targetUrl;
+    }, redirectDelay);
   </script>
 </body>
 </html>
