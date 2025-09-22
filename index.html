@@ -2,80 +2,95 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Redirecting...</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
+      background: black;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: black;
-      color: #00ff41;
-      font-family: "Courier New", monospace;
-      overflow: hidden;
     }
 
-    .terminal {
-      text-align: center;
-      font-size: 1.5rem;
-      white-space: pre;
-      text-shadow: 0 0 5px #00ff41, 0 0 10px #00ff41;
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
     }
 
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      animation: blink 0.7s infinite alternate;
+    /* Circular hacker-style loader */
+    .loader {
+      z-index: 1;
+      width: 80px;
+      height: 80px;
+      border: 6px solid rgba(0, 255, 0, 0.2);
+      border-top: 6px solid #00ff00;
+      border-radius: 50%;
+      animation: spin 1s linear infinite, glow 1.5s ease-in-out infinite alternate;
     }
 
-    @keyframes blink {
-      from { opacity: 1; }
-      to { opacity: 0; }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes glow {
+      from { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
+      to { box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00; }
     }
   </style>
 </head>
 <body>
-  <div class="terminal" id="terminal"></div>
+  <canvas id="matrix"></canvas>
+  <div class="loader"></div>
 
   <script>
-    const redirectDelay = 4000; // total time before redirect (ms)
-    const targetUrl = "https://suraj-singh-khurana.vercel.app/";
+    // Matrix rain effect
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
 
-    const terminal = document.getElementById("terminal");
-    const lines = [
-      "Initializing system...",
-      "Bypassing firewalls...",
-      "Loading encrypted portfolio files...",
-      "Decrypting access...",
-      "Redirecting to main server..."
-    ];
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
 
-    let lineIndex = 0;
-    let charIndex = 0;
+    const letters = "アァイィウヴエェオカガキギクグケゲコゴサザシジスズセゼソゾタダチッヂヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモヤャユュヨョラリルレロワヰヱヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
 
-    function typeLine() {
-      if (lineIndex < lines.length) {
-        if (charIndex < lines[lineIndex].length) {
-          terminal.innerHTML += lines[lineIndex][charIndex];
-          charIndex++;
-          setTimeout(typeLine, 50); // typing speed
-        } else {
-          terminal.innerHTML += "\n";
-          lineIndex++;
-          charIndex = 0;
-          setTimeout(typeLine, 300); // pause between lines
+    const drops = [];
+    for (let x = 0; x < columns; x++) {
+      drops[x] = 1;
+    }
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#0F0";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
         }
+        drops[i]++;
       }
     }
 
-    typeLine();
+    setInterval(draw, 33);
 
-    // redirect after delay
+    // Redirect after 3 seconds
     setTimeout(() => {
-      window.location.href = targetUrl;
-    }, redirectDelay);
+      window.location.href = "https://suraj-singh-khurana.vercel.app";
+    }, 3000);
   </script>
 </body>
 </html>
