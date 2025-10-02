@@ -1,0 +1,38 @@
+---
+layout: archive
+title: "Research"
+permalink: /publications/
+author_profile: true
+---
+My research area of interest is in special values of L-functions, L-functions in Selberg Class,
+application of Euler constant to Divisor problems, and Euler-Kronecker constants.
+
+I defended my Ph.D thesis on October 3, 2019. My research area of interest is broadly analytic
+theory of numbers and related areas.
+
+In case you are unable to access any of the publications listed below, please feel free to
+<a href="mailto:suraj.singh.khurana@gmail.com" class="btn btn--primary">email me</a>.
+
+{% include base_path %}
+
+<ol class="publications">
+{% if site.publication_category %}
+  {% for category in site.publication_category %}
+    {% assign title_shown = false %}
+    {% for post in site.publications reversed %}
+      {% if post.category != category[0] %}
+        {% continue %}
+      {% endif %}
+      {% unless title_shown %}
+        <h2>{{ category[1].title }}</h2><hr />
+        {% assign title_shown = true %}
+      {% endunless %}
+      <li>{% include archive-single.html %}</li>
+    {% endfor %}
+  {% endfor %}
+{% else %}
+  {% for post in site.publications reversed %}
+    <li>{% include archive-single.html %}</li>
+  {% endfor %}
+{% endif %}
+</ol>

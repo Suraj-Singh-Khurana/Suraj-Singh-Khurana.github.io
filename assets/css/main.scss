@@ -1,0 +1,83 @@
+---
+---
+
+/*
+ * This file controls what is imported from /_sass
+ *
+ * Note that the files are processed in the order they are imported, so they are partly
+   sorted by the dependencies. Also, the first two lines of the file are required by Jekyll.
+ */
+
+@import
+    "vendor/breakpoint/breakpoint",
+
+    "themes",
+    "theme/{{ site.site_theme | default: 'default' | append: '_light' }}",
+    "theme/{{ site.site_theme | default: 'default' | append: '_dark' }}",
+
+    "include/mixins",
+    "vendor/susy/susy",
+
+    "layout/reset",
+    "layout/base",
+
+    "include/utilities",
+    "layout/tables",
+    "layout/buttons",
+    "layout/notices",
+    "layout/masthead",
+    "layout/navigation",
+    "layout/footer",
+    "syntax",
+
+    "layout/forms",
+
+    "layout/page",
+    "layout/archive",
+    "layout/sidebar",
+    "layout/json_cv",
+
+    "vendor/font-awesome/fontawesome",
+    "vendor/font-awesome/solid",
+    "vendor/font-awesome/brands"
+;
+
+/* Nebula particle background on light yellow */
+#tsparticles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* behind all content */
+  top: 0;
+  left: 0;
+  background: radial-gradient(ellipse at center, #f0efed 0%, #f3f3f2 100%); /* light yellow gradient */
+  overflow: hidden;
+}
+
+/* Ensure masthead/navbar stays on top */
+.masthead, header, .navbar {
+  position: relative;
+  z-index: 10;
+}
+
+/* Text adjustments for light background */
+body {
+  background: transparent;
+  color: #330101; /* darker text for readability */
+}
+
+a {
+  color: #6A0DAD; /* dark purple links */
+}
+a:hover {
+  color: #4B0082;
+}
+
+.page,
+.post,
+.archive,
+.content {
+  background-color: rgba(248, 248, 247, 0.85); /* semi-transparent for light bg */
+  border-radius: 1px;
+  padding: 0.3rem;
+}

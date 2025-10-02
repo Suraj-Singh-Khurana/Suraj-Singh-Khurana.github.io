@@ -1,0 +1,234 @@
+{
+  "basics": {
+    "name": "Suraj Singh Khurana",
+    "email": "2907suraj@gmail.com",
+    "phone": "",
+    "website": "https://suraj-singh-khurana.github.io/",
+    "summary": "Assistant Professor, Department of Mathematics, SRM University AP. Research interests: special values of L-functions, Selberg Class, Euler constant, divisor problems, Euler-Kronecker constants.",
+    "location": {
+      "address": "",
+      "postalCode": "",
+      "city": "Andhra Pradesh",
+      "countryCode": "IN",
+      "region": "India"
+    },
+    "profiles": [
+      {
+        "network": "Google Scholar",
+        "username": "",
+        "url": "https://scholar.google.com/citations?user=r4pQ6VcAAAAJ&hl=en"
+      },
+      {
+        "network": "GitHub",
+        "username": "suraj-singh-khurana",
+        "url": "https://github.com/suraj-singh-khurana"
+      }
+    ]
+  },
+  "work": [
+    {
+      "position": "Assistant Professor",
+      "institution": "SRM University AP",
+      "department": "Mathematics",
+      "startDate": "2023-08",
+      "endDate": "Present"
+    },
+    {
+      "position": "Post-doctoral Fellow",
+      "institution": "IIT Kanpur",
+      "department": "Mathematics",
+      "startDate": "2021-12",
+      "endDate": "2023-07"
+    },
+    {
+      "position": "Post-doctoral Fellow",
+      "institution": "Harish-Chandra Research Institute",
+      "department": "Mathematics",
+      "startDate": "2020-12",
+      "endDate": "2021-11"
+    },
+    {
+      "position": "Post-doctoral Fellow",
+      "institution": "IIIT Delhi",
+      "department": "Mathematics",
+      "startDate": "2020-09",
+      "endDate": "2020-12"
+    },
+    {
+      "position": "Director Fellow (Research Associate)",
+      "institution": "IIT Ropar",
+      "department": "Mathematics",
+      "startDate": "2019-04",
+      "endDate": "2020-04"
+    },
+    {
+      "position": "Senior Research Fellow (CSIR)",
+      "institution": "IIT Ropar",
+      "department": "Mathematics",
+      "startDate": "2017-01",
+      "endDate": "2019-12"
+    },
+    {
+      "position": "Junior Research Fellow (CSIR)",
+      "institution": "IIT Ropar",
+      "department": "Mathematics",
+      "startDate": "2015-01",
+      "endDate": "2017-12"
+    },
+    {
+      "position": "INSPIRE Fellow, Integrated BS-MS",
+      "institution": "IISER Mohali",
+      "department": "Mathematical Sciences",
+      "startDate": "2008-01",
+      "endDate": "2013-12"
+    }
+  ],
+  "education": [
+    {
+      "institution": "IISER Mohali",
+      "area": "Mathematical Sciences",
+      "studyType": "Integrated BS-MS (INSPIRE Fellow)",
+      "startDate": "2008-01",
+      "endDate": "2013-12"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Languages and Tools",
+      "keywords": ["Python", "C", "HTML", "LaTeX", "SageMath"]
+    },
+    {
+      "name": "Software",
+      "keywords": ["Microsoft Office", "VS Code", "Git", "GitHub", "Jupyter Notebook"]
+    },
+    {
+      "name": "Online Certifications",
+      "keywords": [
+        "Coursera: Machine Learning (THYMEYKC98VN)",
+        "Coursera: Getting Started with Git and GitHub (DXTH7LNNZDZG)",
+        "Coursera: Number Theory and Cryptography (83P2JT5MZD45)"
+      ]
+    }
+  ],
+  "languages": [
+    {"language": "English", "fluency": "Full Professional"}
+  ],
+  "interests": [
+    {"name": "Analytic Number Theory"},
+    {"name": "Special Functions"},
+    {"name": "L-functions"}
+  ],
+  "references": [],
+  "publications": [
+    {
+      "name": "A closed-form expression for the Euler–Kronecker constant of a quadratic field",
+      "publisher": "The Ramanujan Journal",
+      "releaseDate": "2024-01-01",
+      "website": "https://doi.org/10.1007/s11139-023-00772-8",
+      "summary": "S. S. Khurana, The Ramanujan Journal 63 (2024), 507-526."
+    },
+    {
+      "name": "On irrationality criteria for the Ramanujan summation of certain series",
+      "publisher": "International Journal of Number Theory",
+      "releaseDate": "2023-07-01",
+      "website": "https://doi.org/10.1142/S179304212350077X",
+      "summary": "S. S. Khurana, Int. J. Number Theory 19(7) (2023), 1571-1587."
+    },
+    {
+      "name": "Zeros of derivatives of L-functions in the Selberg class on Re(s)<1/2",
+      "publisher": "Proc. Amer. Math. Soc.",
+      "releaseDate": "2023-01-01",
+      "website": "https://doi.org/10.1090/proc/16251",
+      "summary": "S. Chaubey, S. S. Khurana, A. I. Suriajaya, Proc. Amer. Math. Soc. 151(5) (2023), 1855-1866."
+    },
+    {
+      "name": "A series representation of Euler-Stieltjes constants and an identity of Ramanujan",
+      "publisher": "Rocky Mountain J. Math.",
+      "releaseDate": "2022-01-01",
+      "website": "https://doi.org/10.1216/rmj.2022.52.49",
+      "summary": "T. Chatterjee, S. S. Khurana, Rocky Mountain J. Math. 52(1) (2022), 49-64."
+    },
+    {
+      "name": "Shifted Euler constants and a generalization of Euler-Stieltjes constants",
+      "publisher": "J. Number Theory",
+      "releaseDate": "2019-01-01",
+      "website": "https://doi.org/10.1016/j.jnt.2019.04.001",
+      "summary": "T. Chatterjee, S. S. Khurana, J. Number Theory 204 (2019), 185-210."
+    },
+    {
+      "name": "Erdosian functions and an identity of Gauss",
+      "publisher": "Proc. Japan Acad. Ser. A Math. Sci.",
+      "releaseDate": "2019-06-01",
+      "website": "https://projecteuclid.org/euclid.pja/1559268171",
+      "summary": "T. Chatterjee, S. S. Khurana, Proc. Japan Acad. Ser. A Math. Sci. 95(6) (2019), 58-63."
+    },
+    {
+      "name": "A note on generalizations of Stieltjes constant",
+      "publisher": "J. Ramanujan Math. Soc.",
+      "releaseDate": "2019-12-01",
+      "website": "http://52.172.152.24/index.php/rms/article/view/191325",
+      "summary": "T. Chatterjee, S. S. Khurana, J. Ramanujan Math. Soc. 34(4) (2019), 457-468."
+    }
+  ],
+  "presentations": [
+    {
+      "name": "AIS in Analytic Number Theory, NCM, KIIT University, Bhubaneshwar",
+      "event": "National Centre for Mathematics (NCM)",
+      "date": "2015-06-20",
+      "location": "KIIT University, Bhubaneshwar, India",
+      "description": "Advanced Instructional School (AIS) in Analytic Number Theory, June 1–20, 2015."
+    },
+    {
+      "name": "Talk: 'Some results for L-functions in Selberg Class'",
+      "event": "Young Researchers meeting, IITK",
+      "date": "2022-03-26",
+      "location": "IIT Kanpur, India",
+      "description": "Talk at Young Researchers meeting, IITK."
+    },
+    {
+      "name": "Invited Speaker: 'Celebrating Number Theory in India'",
+      "event": "IISER Pune",
+      "date": "2024-12-13",
+      "location": "IISER Pune, India",
+      "description": "Invited Speaker at 'Celebrating Number Theory in India', IISER Pune."
+    },
+    {
+      "name": "Contributed Talk: 33èmes Journées Arithmétiques, University of Luxembourg",
+      "event": "University of Luxembourg",
+      "date": "2025-07-04",
+      "location": "Luxembourg",
+      "description": "Contributed Talk at 33èmes Journées Arithmétiques, University of Luxembourg."
+    }
+  ],
+  "teaching": [
+    {
+      "course": "MAL415 Algebra",
+      "institution": "IIT Ropar",
+      "date": "2018-08-01",
+      "role": "Tutor",
+      "description": "Algebra, Aug-Nov 2018"
+    },
+    {
+      "course": "MA102 Linear Algebra, Integral Transforms and Special Functions",
+      "institution": "IIT Ropar",
+      "date": "2018-01-01",
+      "role": "Tutor",
+      "description": "Jan-May 2018"
+    },
+    {
+      "course": "MTH101A Advanced Calculus",
+      "institution": "IIT Kanpur",
+      "date": "2021-12-01",
+      "role": "Tutor",
+      "description": "Dec 2021–Mar 2022"
+    },
+    {
+      "course": "FIC103 Calculus for Engineers",
+      "institution": "SRM University AP",
+      "date": "2023-08-01",
+      "role": "Instructor",
+      "description": "Full instructor, SRM University AP"
+    }
+  ],
+  "portfolio": []
+}

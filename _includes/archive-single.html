@@ -1,0 +1,55 @@
+{% include base_path %}
+
+<div class="archive__item" style="margin-bottom:1em;">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+
+    <!-- Numbering -->
+    {% if include.index %}
+      <span style="font-weight:bold;">[{{ include.index }}]</span>
+    {% endif %}
+
+    <!-- Title -->
+    <span itemprop="headline">
+      {% if post.paperurl %}
+        <a href="{{ post.paperurl }}" target="_blank">{{ post.title }}</a>
+      {% else %}
+        {{ post.title }}
+      {% endif %}
+    </span>
+    <br/>
+
+    <!-- Authors -->
+    {% if post.authors %}
+      <span style="font-style:italic;">{{ post.authors | join: ", " }}</span><br/>
+    {% endif %}
+
+    <!-- Venue / Journal info -->
+    <span>
+      {% if post.venue %}
+        <i>{{ post.venue }}</i>
+      {% elsif post.journal %}
+        <i>{{ post.journal }}</i>
+      {% endif %}
+      {% if post.volume %} <b>{{ post.volume }}</b>{% endif %}
+      {% if post.number %} ({{ post.number }}){% endif %}
+      {% if post.pages %}, {{ post.pages }}{% endif %}
+      {% if post.date %} ({{ post.date | date: "%Y" }}){% endif %}
+    </span>
+
+    <!-- Links -->
+    <span>
+      {% if post.doi %}
+        <a href="{{ post.doi }}" target="_blank">Link</a>
+      {% endif %}
+      {% if post.slidesurl %}
+        {% if post.doi or post.paperurl %} | {% endif %}
+        <a href="{{ post.slidesurl }}" target="_blank">Slides</a>
+      {% endif %}
+      {% if post.bibtexurl %}
+        {% if post.doi or post.paperurl or post.slidesurl %} | {% endif %}
+        <a href="{{ post.bibtexurl }}" target="_blank">BibTeX</a>
+      {% endif %}
+    </span>
+
+  </article>
+</div>

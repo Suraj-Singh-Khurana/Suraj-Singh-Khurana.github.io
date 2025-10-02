@@ -1,0 +1,60 @@
+---
+layout: archive
+title: "Courses taught"
+permalink: /teaching/
+author_profile: true
+---
+
+{% include base_path %}
+
+<div class="teaching-list">
+  {% assign courses = site.teaching | sort: "date" | reverse %}
+  {% for course in courses %}
+    <div class="teaching-course" style="margin-bottom:2em; padding:1em; border:1px solid #e0e0e0; border-radius:8px;">
+      <h3 style="margin-top:0;">
+        {% if course.status == "Ongoing" and course.external_url %}
+          <a href="{{ course.external_url }}" target="_blank" style="text-decoration:none;">
+            {{ course.title }}
+          </a>
+          <span style="font-size:0.8em; color:#388e3c; font-weight:normal;">({{ course.status }})</span>
+        {% else %}
+          {{ course.title }}
+          {% if course.status %}
+            <span style="font-size:0.8em; color:#388e3c; font-weight:normal;">({{ course.status }})</span>
+          {% endif %}
+        {% endif %}
+      </h3>
+      <p style="font-size:0.9em; color:#666; margin-bottom:0.2em;">
+        {% if course.venue %}
+          <span>{{ course.venue }}</span>
+        {% endif %}
+        {% if course.location %}
+          <span> | {{ course.location }}</span>
+        {% endif %}
+        {% if course.date %}
+          <span> | {{ course.date | date: "%B %Y" }}</span>
+        {% endif %}
+      </p>
+    </div>
+  {% endfor %}
+
+</div>
+
+<hr>
+
+<h2>Previous Teaching Experience</h2>
+
+<strong>IIT Ropar – Tutor</strong>  
+<ul>
+  <li>MAL415 Algebra, 2016–2018</li>
+  <li>MA102 Linear Algebra, Integral Transforms, Special Functions, 2018</li>
+  <li>MAL412 Linear Algebra, 2017</li>
+  <li>MAL213 Probability & Stochastic Processes, 2016</li>
+  <li>MAL112 Advanced Calculus, 2015</li>
+</ul>
+
+<strong>IIT Kanpur – Tutor</strong>  
+<ul>
+  <li>MTH101A Advanced Calculus, Dec 2021–Mar 2022</li>
+  <li>MTH102A Linear Algebra & ODE, Apr–Jul 2022</li>
+</ul>
