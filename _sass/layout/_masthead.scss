@@ -1,3 +1,15 @@
+/* Highlight active masthead menu item */
+/* Premium ellipse highlight for active nav item */
+.masthead__menu-item.active > a,
+.masthead__menu-item--lg.active > a {
+  background: linear-gradient(90deg, #e0f0ff 0%, #b7eaff 100%);
+  color: #0c1329 !important;
+  border-radius: 999px;
+  font-weight: 700;
+  box-shadow: 0 4px 16px 0 #b7c6f655;
+  padding: 0.5em 2em;
+  transition: background 0.3s, box-shadow 0.3s;
+}
 /* ==========================================================================
    MASTHEAD
    ========================================================================== */
@@ -13,7 +25,7 @@
           animation: intro 0.3s both;
   -webkit-animation-delay: 0.15s;
           animation-delay: 0.15s;
-  z-index: 20;
+  z-index: 2000;
 
   &::after {
     content: "";
@@ -35,7 +47,7 @@
     }
 
     nav {
-      z-index: 10;
+      z-index: 2000;
     }
 
     a {
@@ -61,7 +73,7 @@
   white-space: nowrap;
 
   &--lg {
-    padding-right: 2em;
+    padding-right: 5em;
     font-weight: 700;
   }
 }

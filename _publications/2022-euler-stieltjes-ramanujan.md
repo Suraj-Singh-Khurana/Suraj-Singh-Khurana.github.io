@@ -12,7 +12,7 @@ journal: "Rocky Mountain J. Math."
 volume: 52
 number: 1
 pages: "49-64"
-doi: "10.1216/rmj.2022.52.49"
+doi: "https://doi.org/10.1216/rmj.2022.52.49"
 paperurl: "https://doi.org/10.1216/rmj.2022.52.49"
 ---
 This paper presents a series representation of Euler-Stieltjes constants and an identity of Ramanujan.  

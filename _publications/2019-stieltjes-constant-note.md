@@ -12,7 +12,7 @@ journal: "J. Ramanujan Math. Soc."
 volume: 34
 number: 4
 pages: "457-468"
-doi: ""
+doi: "http://52.172.152.24/index.php/rms/article/view/191325"
 paperurl: "http://52.172.152.24/index.php/rms/article/view/191325"
 ---
 This paper is a note on generalizations of Stieltjes constant.  

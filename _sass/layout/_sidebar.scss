@@ -149,11 +149,16 @@
 }
 
 .author__bio {
-  margin: 0;
+  margin: 2 px;
+  font-family: Georgia, Times, "Times New Roman", serif;
+  font-size: 0.70em;
+  font-style: italic;
+  color: #0f0cda;
 
   @include breakpoint($large) {
     margin-top: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    font-size: 0.90em;
   }
 }
 

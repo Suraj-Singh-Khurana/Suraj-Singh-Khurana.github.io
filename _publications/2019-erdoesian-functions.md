@@ -12,7 +12,7 @@ journal: "Proc. Japan Acad. Ser. A Math. Sci."
 volume: 95
 number: 6
 pages: "58-63"
-doi: ""
+doi: "https://projecteuclid.org/euclid.pja/1559268171"
 paperurl: "https://projecteuclid.org/euclid.pja/1559268171"
 ---
 This paper discusses Erdosian functions and an identity of Gauss.  

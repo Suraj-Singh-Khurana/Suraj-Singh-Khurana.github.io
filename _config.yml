@@ -9,7 +9,7 @@
 # Basic Site Settings
 locale                   : "en-US"
 site_theme               : "default" # Currently available options are "default", "air"
-title                    : "Suraj Singh Khurana"
+title                    : "Homepage"
 title_separator          : "-"
 name                     : &name "Suraj Singh Khurana"
 description              : &description "Homepage of Suraj Singh Khurana"   # Update this with a general description of your site, this is the default if not overridden by a page
@@ -26,9 +26,9 @@ author:
   avatar           : "profile.png"
   name             : "Suraj Singh Khurana"
   pronouns         : # example: "she/her"  
-  bio              : "Assistant Professor, Department of Mathematics"
+  bio              : "Assistant Professor<br>Department of Mathematics<br>SRM University -AP<br>"
+  employer         : #
   location         : "India"
-  employer         : "SRM University AP"
   uri              : "https://srmap.edu.in/faculty/dr-suraj-singh-khurana/"
   email            : "suraj.singh.khurana@gmail.com"
   mathscinet       : "https://mathscinet.ams.org/mathscinet/MRAuthorID/1325741"
