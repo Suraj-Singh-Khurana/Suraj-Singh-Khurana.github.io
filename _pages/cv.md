@@ -55,19 +55,19 @@ Previously, I was a post-doctoral fellow at Indian Institute of Technology Kanpu
 ## Research Work / Publications
 
 1. **S. S. Khurana**, *A closed-form expression for the Euler–Kronecker constant of a quadratic field*, The Ramanujan Journal **63**, (2024) 507–526.  
-   [DOI](https://doi.org/10.1007/s11139-023-00772-8)
+   [Link](https://doi.org/10.1007/s11139-023-00772-8)
 
 2. **S. S. Khurana**, *On irrationality criteria for the Ramanujan summation of certain series*, International Journal of Number Theory **19**, No. 7 (2023), 1571–1587.  
-   [DOI](https://doi.org/10.1142/S179304212350077X)
+   [Link](https://doi.org/10.1142/S179304212350077X)
 
 3. **S. Chaubey, S. S. Khurana, A. I. Suriajaya**, *Zeros of derivatives of L-functions in the Selberg class on Re(s)<1/2*, Proc. Amer. Math. Soc. **151**, No. 5 (2023), 1855–1866.  
-   [DOI](https://doi.org/10.1090/proc/16251)
+   [Link](https://doi.org/10.1090/proc/16251)
 
 4. **T. Chatterjee & S. S. Khurana**, *A series representation of Euler-Stieltjes constants and an identity of Ramanujan*, Rocky Mountain J. Math. **52**, No. 1 (2022), 49–64.  
-   [DOI](10.1216/rmj.2022.52.49)
+   [Link](10.1216/rmj.2022.52.49)
 
 5. **T. Chatterjee & S. S. Khurana**, *Shifted Euler constants and a generalization of Euler-Stieltjes constants*, J. Number Theory, 204 (2019), 185–210.  
-   [DOI](https://doi.org/10.1016/j.jnt.2019.04.001)
+   [Link](https://doi.org/10.1016/j.jnt.2019.04.001)
 
 6. **T. Chatterjee & S. S. Khurana**, *Erdösian functions and an identity of Gauss*, Proc. Japan Acad. Ser. A Math. Sci. 95 (2019), no. 6, 58–63.  
    [Link](https://projecteuclid.org/euclid.pja/1559268171)
