@@ -31,25 +31,46 @@ layout: compress
     {% include scripts.html %}
 
     <!-- Nebula particles script -->
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-engine@2.11.0/tsparticles.engine.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.0/tsparticles.bundle.min.js"></script>
     <script>
-      window.addEventListener('DOMContentLoaded', function() {
-        tsParticles.load("tsparticles", {
-          background: { color: "transparent" },
-          particles: {
-            number: { value: 100 },
-            color: { value: ["#204e36", "#13c614", "#000000", "#3B006F"] }, // purple/dark shades
-            shape: { type: "circle" },
-            opacity: { value: 0.8 },
-            size: { value: 1.0 },
-            move: { enable: true, speed: 0.7, random: true, outModes: { default: "out" } },
-            links: { enable: true } 
-          },
-          interactivity: {
-            events: { onHover: { enable: false } } 
+      (function() {
+        function initParticles() {
+          if (typeof tsParticles !== 'undefined') {
+            tsParticles.load("tsparticles", {
+              background: { color: "transparent" },
+              particles: {
+                number: { value: 100 },
+                color: { value: ["#204e36", "#13c614", "#000000", "#3B006F"] },
+                shape: { type: "circle" },
+                opacity: { value: 0.8 },
+                size: { value: 1.0 },
+                move: { enable: true, speed: 0.7, random: true, outModes: { default: "out" } },
+                links: { 
+                  enable: true,
+                  distance: 150,
+                  color: "#808080",
+                  opacity: 0.4,
+                  width: 1
+                } 
+              },
+              interactivity: {
+                events: { onHover: { enable: false } } 
+              }
+            }).catch(function(error) {
+              console.error('tsParticles error:', error);
+            });
+          } else {
+            console.error('tsParticles not loaded');
           }
-        });
-      });
+        }
+        
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initParticles);
+        } else {
+          initParticles();
+        }
+      })();
     </script>
 
   </body>
