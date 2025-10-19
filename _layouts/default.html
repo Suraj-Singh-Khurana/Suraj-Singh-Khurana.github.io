@@ -33,20 +33,22 @@ layout: compress
     <!-- Nebula particles script -->
     <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.0/tsparticles.bundle.min.js"></script>
     <script>
-      tsParticles.load("tsparticles", {
-        background: { color: "transparent" },
-        particles: {
-          number: { value: 100 },
-          color: { value: ["#204e36", "#13c614", "#000000", "#3B006F"] }, // purple/dark shades
-          shape: { type: "circle" },
-          opacity: { value: 0.8 },
-          size: { value: 1.0 },
-          move: { enable: true, speed: 0.7, random: true, outModes: { default: "out" } },
-          links: { enable: true } 
-        },
-        interactivity: {
-          events: { onHover: { enable: false } } 
-        }
+      window.addEventListener('DOMContentLoaded', function() {
+        tsParticles.load("tsparticles", {
+          background: { color: "transparent" },
+          particles: {
+            number: { value: 100 },
+            color: { value: ["#204e36", "#13c614", "#000000", "#3B006F"] }, // purple/dark shades
+            shape: { type: "circle" },
+            opacity: { value: 0.8 },
+            size: { value: 1.0 },
+            move: { enable: true, speed: 0.7, random: true, outModes: { default: "out" } },
+            links: { enable: true } 
+          },
+          interactivity: {
+            events: { onHover: { enable: false } } 
+          }
+        });
       });
     </script>
 
