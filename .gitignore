@@ -1,0 +1,12 @@
+# Local build artifacts
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# Bundler installs
+vendor/
+.bundle/
+
+# OS cruft
+.DS_Store

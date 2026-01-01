@@ -9,6 +9,6 @@ redirect_from:
 
 ## Welcome to homepage
 
-[Publications](/publications/)  
+[Research](/publications/)  
 [Teaching](/teaching/)  
 [CV](/cv/)
