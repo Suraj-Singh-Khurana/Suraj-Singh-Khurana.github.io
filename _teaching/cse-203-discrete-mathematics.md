@@ -6,8 +6,6 @@ permalink: /teaching/cse-203-discrete-mathematics
 venue: "SRM University AP"
 date: "2025-08-01"
 location: "Andhra Pradesh, India"
-status: "Ongoing"
-external_url: "https://checkmyscore.vercel.app/"
 ---
 
 This course is currently running.

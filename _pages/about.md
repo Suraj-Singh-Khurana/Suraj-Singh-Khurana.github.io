@@ -8,3 +8,7 @@ redirect_from:
 ---
 
 ## Welcome to homepage
+
+[Publications](/publications/)  
+[Teaching](/teaching/)  
+[CV](/cv/)

@@ -1,0 +1,22 @@
+{
+  "name": "Academic Pages Jekyll Site",
+  "dockerComposeFile": "../docker-compose.yaml",
+  "service": "jekyll-site",
+  "workspaceFolder": "/usr/src/app",
+  "forwardPorts": [4000],
+  "portsAttributes": {
+    "4000": {
+      "label": "Jekyll Site",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "echo 'DevContainer ready! The Jekyll site will be available at http://localhost:4000'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "sissel.shopify-liquid",
+        "yzhang.markdown-all-in-one"
+      ]
+    }
+  }
+}
