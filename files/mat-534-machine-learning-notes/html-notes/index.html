@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Mathematics for Machine Learning - Course Notes</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { color: #1a1a1a; background-color: #f5f5f5; }
+    body { 
+      margin: 0 auto;
+      max-width: 900px;
+      padding: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+      position: relative;
+      z-index: 10;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .watermark {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      font-size: 3em;
+      color: rgba(200, 200, 200, 0.1);
+      pointer-events: none;
+      z-index: 0;
+      white-space: nowrap;
+      user-select: none;
+      font-weight: bold;
+    }
+    
+    .page-content { display: none; }
+    .page-content.active { display: block; animation: fadeIn 0.3s ease-in; }
+    
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+    
+    button {
+      background: #0B5CFF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    button:hover:not(:disabled) {
+      background: #004d99;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(11, 92, 255, 0.3);
+    }
+    
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    
+    @media (max-width: 600px) {
+      body { font-size: 0.9em; padding: 12px; }
+      h1 { font-size: 1.8em; }
+    }
+    @media print {
+      .watermark {
+        display: block;
+        color: rgba(200, 200, 200, 0.15);
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .footer { display: none; }
+      body { background: white; }
+    }
+    
+    p { margin: 1em 0; }
+    a { color: #1a1a1a; }
+    img { max-width: 100%; }
+    h1, h2, h3, h4, h5, h6 { margin-top: 1.4em; }
+    h5, h6 { font-size: 1em; font-style: italic; }
+    h6 { font-weight: normal; }
+    ol, ul { padding-left: 1.7em; margin-top: 1em; }
+    li { margin: 0.5em 0; }
+    dt { font-weight: bold; margin: 1em 0 0.5em 0; }
+    dd { margin: 0.5em 0 1em 1.5em; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+    th { background-color: #f0f0f0; font-weight: bold; }
+    blockquote { margin: 1em 0; padding-left: 1em; border-left: 3px solid #ddd; }
+    code { background: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-family: monospace; }
+    pre { background: #f4f4f4; padding: 1em; border-radius: 5px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+<div class="watermark">Suraj Singh Khurana</div>
+
+<div class="page-content" id="page-1">
+
+<div class="center">
+<p><span><strong>Mathematics for Machine Learning</strong></span><br />
+<span>Course Notes</span><br />
+<span>Suraj Singh Khurana</span><br />
+<span>Spring 2026</span></p>
+</div>
+<hr />
+<h1 id="introduction-to-linear-regression">Introduction to Linear
+Regression</h1>
+
+</div>
+<div class="page-content" id="page-2">
+<h2 id="housing-price-problem">Housing Price Problem</h2>
+<p>"Suppose a real-estate website wants to predict house prices based on
+features like size and number of bedrooms." To do anything, we shall
+need some information,</p>
+<div class="center">
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Size (<span
+class="math inline">\(x_1\)</span>)</th>
+<th style="text-align: center;">Bedrooms (<span
+class="math inline">\(x_2\)</span>)</th>
+<th style="text-align: center;">Price (Rs. lakhs)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">70</td>
+</tr>
+<tr>
+<td style="text-align: center;">20</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">130</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Here <span class="math display">\[\begin{aligned}
+x_1 &amp;= \text{house size (in 100 sq ft)}, \\
+x_2 &amp;= \text{number of bedrooms}, \\
+w_1 &amp;= \text{price contribution per unit size (Rs. lakhs per 100 sq
+ft)}, \\
+w_2 &amp;= \text{price contribution per bedroom (Rs. lakhs)}.
+\end{aligned}\]</span></p>
+<p>Now we want to build a model that predicts the price of a house based
+on its size and number of bedrooms. We assume that the price
+contributions from size and number of bedrooms are linear and
+additive.</p>
+<p>Thus the linear model for the price (in Rs. lakhs) is <span
+class="math display">\[\hat y = w_1 x_1 + w_2 x_2,\]</span> where <span
+class="math inline">\(\hat y\)</span> denotes the predicted price. Here
+<span class="math inline">\(\hat y\)</span> is a linear combination of
+the input features <span class="math inline">\(x_1\)</span> and <span
+class="math inline">\(x_2\)</span> with the weights <span
+class="math inline">\(w_1\)</span> and <span
+class="math inline">\(w_2\)</span> representing the model parameters.
+The word feature refers to an individual measurable property or
+characteristic of the data being analyzed. In this case, the features
+are the size of the house and the number of bedrooms. To find the
+best-fitting weights <span class="math inline">\(w_1\)</span> and <span
+class="math inline">\(w_2\)</span>, we can set up a system of equations
+based on the provided data points. From the data, we have two equations:
+<span class="math display">\[\begin{aligned}
+70 &amp;= w_1 \cdot 10 + w_2 \cdot 2, \\
+130 &amp;= w_1 \cdot 20 + w_2 \cdot 3.
+\end{aligned}\]</span> We can solve this system of equations to find the
+values of <span class="math inline">\(w_1\)</span> and <span
+class="math inline">\(w_2\)</span>. Rearranging the equations, we get:
+<span class="math display">\[\begin{aligned}
+10 w_1 + 2 w_2 &amp;= 70, \\
+20 w_1 + 3 w_2 &amp;= 130.
+\end{aligned}\]</span> We can solve this system using methods such as
+substitution, elimination, or matrix methods. Substitution or
+elimination would be straightforward here, but for larger systems,
+matrix methods are more efficient. Let us therefore express the system
+in matrix form: <span class="math display">\[\begin{bmatrix}10 &amp; 2
+\\
+20 &amp; 3\end{bmatrix}
+\begin{bmatrix}w_1 \\ w_2\end{bmatrix}
+=
+\begin{bmatrix}70 \\ 130\end{bmatrix}.\]</span> Let <span
+class="math inline">\(A = \begin{bmatrix}10 &amp; 2 \\ 20 &amp;
+3\end{bmatrix}\)</span>, <span class="math inline">\(\mathbf{w} =
+\begin{bmatrix}w_1 \\ w_2\end{bmatrix}\)</span>, and <span
+class="math inline">\(\mathbf{b} = \begin{bmatrix}70 \\
+130\end{bmatrix}\)</span>. Then we have <span class="math inline">\(A
+\mathbf{w} = \mathbf{b}\)</span>. To solve for <span
+class="math inline">\(\mathbf{w}\)</span>, we can use the inverse of
+matrix <span class="math inline">\(A\)</span> (if it exists) or use
+other methods like Gaussian elimination. <span
+class="math display">\[\mathbf{w} = A^{-1} \mathbf{b}.\]</span></p>
+<p>Calculating the inverse of <span class="math inline">\(A\)</span>:
+<span class="math display">\[\begin{aligned}
+A^{-1} &amp;= \frac{1}{(10)(3) - (2)(20)} \begin{bmatrix}3 &amp; -2 \\
+-20 &amp; 10\end{bmatrix} \\
+        &amp;= \frac{1}{30 - 40} \begin{bmatrix}3 &amp; -2 \\ -20 &amp;
+10\end{bmatrix} \\
+        &amp;= -\frac{1}{10} \begin{bmatrix}3 &amp; -2 \\ -20 &amp;
+10\end{bmatrix} \\
+        &amp;= \begin{bmatrix}-\dfrac{3}{10} &amp; \dfrac{2}{10} \\
+\dfrac{20}{10} &amp; -\dfrac{10}{10}\end{bmatrix} \\
+        &amp;= \begin{bmatrix}-0.3 &amp; 0.2 \\ 2 &amp; -1\end{bmatrix}.
+\end{aligned}\]</span></p>
+<p>Now, multiplying <span class="math inline">\(A^{-1}\)</span> with
+<span class="math inline">\(\mathbf{b}\)</span>: <span
+class="math display">\[\begin{aligned}
+\mathbf{w} &amp;= A^{-1} \mathbf{b} \\
+            &amp;= \begin{bmatrix}-0.3 &amp; 0.2 \\ 2 &amp;
+-1\end{bmatrix} \begin{bmatrix}70 \\ 130\end{bmatrix} \\
+            &amp;= \begin{bmatrix}-0.3 \cdot 70 + 0.2 \cdot 130 \\ 2
+\cdot 70 - 1 \cdot 130\end{bmatrix} \\
+            &amp;= \begin{bmatrix}-21 + 26 \\ 140 - 130\end{bmatrix} \\
+            &amp;= \begin{bmatrix}5 \\ 10\end{bmatrix}.
+\end{aligned}\]</span></p>
+<p>Thus, we find that <span class="math inline">\(w_1 = 5\)</span> and
+<span class="math inline">\(w_2 = 10\)</span>. Therefore, the linear
+model for predicting house prices is: <span class="math display">\[\hat
+y = 5 x_1 + 10 x_2.\]</span> This means that for every additional 100 sq
+ft of house size, the price increases by Rs.5 lakhs, and for every
+additional bedroom, the price increases by Rs.10 lakhs.</p>
+<p>We should see the formulation below <span
+class="math display">\[\begin{bmatrix}
+10 &amp; 2 \\
+20 &amp; 3
+\end{bmatrix}
+\begin{bmatrix}
+w_1 \\
+w_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+70 \\
+130
+\end{bmatrix}\]</span> as <span
+class="math display">\[X\mathbf{w}=\mathbf{y}\]</span> "Machine learning
+systems only see this." Now suppose we get a third house with size 15
+(i.e., 1500 sq ft) and 2 bedrooms. Or in other words, our data table
+looks like</p>
+<div class="center">
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Size (<span
+class="math inline">\(x_1\)</span>)</th>
+<th style="text-align: center;">Bedrooms (<span
+class="math inline">\(x_2\)</span>)</th>
+<th style="text-align: center;">Price (Rs. lakhs)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">70</td>
+</tr>
+<tr>
+<td style="text-align: center;">20</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">130</td>
+</tr>
+<tr>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">100</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>We can no longer solve for <span class="math inline">\(w_1\)</span>
+and <span class="math inline">\(w_2\)</span> exactly since we have three
+equations but only two unknowns. Even if we try to solve it, we will
+find that there is no exact solution that satisfies all three equations
+simultaneously. If you do not believe me, try to use Gaussian
+elimination. We will get the following augmented matrix: <span
+class="math display">\[\left[\begin{array}{cc|c}
+10 &amp; 2 &amp; 70 \\
+20 &amp; 3 &amp; 130 \\
+15 &amp; 2 &amp; 100
+\end{array}\right]\]</span> Applying row operations, we will get the
+following row echelon form: <span
+class="math display">\[\left[\begin{array}{cc|c}
+10 &amp; 2 &amp; 70 \\
+0 &amp; 1 &amp; 5 \\
+0 &amp; 0 &amp; 0
+\end{array}\right]\]</span> The last row corresponds to the equation
+<span class="math inline">\(0 = 0\)</span>, which indicates the system
+is consistent but underdetermined. However, this means the third
+equation is a linear combination of the first two, so we still cannot
+determine unique values for both weights. Or if you want to be more
+mathematical about it, the rank of the coefficient matrix is 2, while
+the rank of the augmented matrix is also 2, but we have only 2
+independent equations for 2 unknowns with a dependent third
+equation.</p>
+<p>But does it mean we cannot find a good model? Not really. We can try
+to find weights <span class="math inline">\(w_1\)</span> and <span
+class="math inline">\(w_2\)</span> that minimize the error between the
+predicted prices and the actual prices. Since we do not have an exact
+solution of <span class="math inline">\(X\mathbf{w}=\mathbf{y}\)</span>
+we can try to find an approximate solution, that is <span
+class="math inline">\(X\mathbf{w} \approx \mathbf{y}\)</span>. Old
+question (math): “Find <span class="math inline">\(\mathbf w\)</span>
+such that <span class="math inline">\(X\mathbf w=\mathbf
+y\)</span>.”</p>
+<p>New question (ML): “Find <span class="math inline">\(\mathbf
+w\)</span> such that <span class="math inline">\(X\mathbf
+w\approx\mathbf y\)</span> as closely as possible.”</p>
+<p>Define the error for the <span class="math inline">\(i\)</span>-th
+house as <span class="math display">\[e_i=\hat y_i-y_i,
+    \qquad
+    \hat y_i = w_1 x_{i1}+w_2 x_{i2}.\]</span> One common approach is to
+consider the following optimization problem: <span
+class="math display">\[\min_{w_1, w_2} \sum_{i=1}^{3} (y_i -
+\hat{y}_i)^2,\]</span> where <span class="math inline">\(y_i\)</span> is
+the actual price of the <span class="math inline">\(i\)</span>-th house,
+and <span class="math inline">\(\hat{y}_i\)</span> is the predicted
+price using our linear model. This approach is known as the least
+squares method</p>
+<p>More formally,</p>
+<h1 id="linear-regression-theory-and-mathematical-foundations">Linear
+Regression: Theory and Mathematical Foundations</h1>
+<p>In many real-world problems, such as house price prediction, we
+attempt to model the relationship between several input variables
+(features) and an observed output using a linear rule. While simple
+linear systems may admit exact solutions, real data is noisy,
+inconsistent, and overdetermined. Linear regression provides a
+principled mathematical framework to handle such situations.</p>
+
+</div>
+<div class="page-content" id="page-3">
+<h2 id="linear-model-assumption">Linear Model Assumption</h2>
+<p>Let <span class="math inline">\(x_i \in \mathbb{R}^d\)</span> denote
+the feature vector associated with the <span
+class="math inline">\(i\)</span>-th data point (for example, house size,
+number of bedrooms, age, etc.), and let <span class="math inline">\(y_i
+\in \mathbb{R}\)</span> denote the corresponding observed output (house
+price). We assume a linear relationship between inputs and output of the
+form <span class="math display">\[\hat{y}_i = w^\top x_i,\]</span> where
+<span class="math inline">\(w \in \mathbb{R}^d\)</span> is an unknown
+parameter vector to be learned from data. This assumption means that the
+output is linear in the parameters <span
+class="math inline">\(w\)</span>, which is the defining feature of
+linear regression.</p>
+
+</div>
+<div class="page-content" id="page-4">
+<h2 id="matrix-formulation">Matrix Formulation</h2>
+<p>Given <span class="math inline">\(n\)</span> data points, we stack
+the feature vectors row-wise into a design matrix <span
+class="math display">\[X =
+\begin{bmatrix}
+x_1^\top \\
+x_2^\top \\
+\vdots \\
+x_n^\top
+\end{bmatrix}
+\in \mathbb{R}^{n \times d},
+\quad
+y =
+\begin{bmatrix}
+y_1 \\
+y_2 \\
+\vdots \\
+y_n
+\end{bmatrix}
+\in \mathbb{R}^n.\]</span> The model predictions for all data points can
+then be written compactly as <span class="math display">\[\hat{y} =
+Xw.\]</span> In idealized situations, one might hope for an exact
+solution to the equation <span class="math inline">\(Xw = y\)</span>.
+However, when <span class="math inline">\(n &gt; d\)</span> and the data
+is noisy, such an equation is typically inconsistent, as demonstrated
+earlier using rank and Gaussian elimination.</p>
+
+</div>
+<div class="page-content" id="page-5">
+<h2 id="residuals-and-error-vector">Residuals and Error Vector</h2>
+<p>The discrepancy between the model predictions and the observed
+outputs is captured by the residual vector <span
+class="math display">\[r = Xw - y.\]</span> Each component <span
+class="math inline">\(r_i = w^\top x_i - y_i\)</span> represents the
+prediction error on a single data point. Since exact satisfaction of all
+equations is generally impossible, the goal is to find a parameter
+vector <span class="math inline">\(w\)</span> that makes these residuals
+collectively as small as possible.</p>
+
+</div>
+<div class="page-content" id="page-6">
+<h2 id="least-squares-criterion">Least Squares Criterion</h2>
+<p>To quantify the total error, we introduce a scalar loss function
+defined as the squared Euclidean norm of the residual vector: <span
+class="math display">\[\mathcal{L}(w) = \|Xw - y\|^2 = \sum_{i=1}^n
+(w^\top x_i - y_i)^2.\]</span> This choice, known as the least squares
+loss, is motivated by several factors: it penalizes large errors more
+strongly, is differentiable, leads to a convex optimization problem, and
+admits a clear geometric interpretation.</p>
+
+</div>
+<div class="page-content" id="page-7">
+<h2 id="optimization-problem">Optimization Problem</h2>
+<p>Linear regression is thus formulated as the following optimization
+problem: <span class="math display">\[\min_{w \in \mathbb{R}^d} \; \|Xw
+- y\|^2.\]</span> This problem seeks the parameter vector whose
+predictions are closest to the observed data in the least squares sense.
+Importantly, this is no longer a problem of solving linear equations
+exactly, but of minimizing an error function.</p>
+<h2 id="vector-representation-and-dimensional-consistency">Vector
+Representation and Dimensional Consistency</h2>
+<p>It is important to clarify how the vectors involved in the linear
+model are represented and why the expression <span
+class="math inline">\(w^\top x_i\)</span> is mathematically valid.</p>
+<p>Each feature vector <span class="math inline">\(x_i\)</span> is
+represented as a column vector in <span
+class="math inline">\(\mathbb{R}^d\)</span>: <span
+class="math display">\[x_i =
+\begin{bmatrix}
+x_{i1} \\
+x_{i2} \\
+\vdots \\
+x_{id}
+\end{bmatrix}
+\in \mathbb{R}^{d \times 1},\]</span> where each component corresponds
+to a measurable attribute of the data point (for example, house size,
+number of bedrooms, etc.).</p>
+<p>Similarly, the parameter vector <span
+class="math inline">\(w\)</span> is also represented as a column vector:
+<span class="math display">\[w =
+\begin{bmatrix}
+w_1 \\
+w_2 \\
+\vdots \\
+w_d
+\end{bmatrix}
+\in \mathbb{R}^{d \times 1}.\]</span></p>
+<p>Since both <span class="math inline">\(w\)</span> and <span
+class="math inline">\(x_i\)</span> are column vectors, their direct
+product <span class="math inline">\(wx_i\)</span> is not defined. To
+obtain a scalar prediction, we take the transpose of <span
+class="math inline">\(w\)</span>, yielding a row vector: <span
+class="math display">\[w^\top =
+\begin{bmatrix}
+w_1 &amp; w_2 &amp; \cdots &amp; w_d
+\end{bmatrix}
+\in \mathbb{R}^{1 \times d}.\]</span></p>
+<p>The prediction for the <span class="math inline">\(i\)</span>-th data
+point is then given by the matrix product <span
+class="math display">\[\hat{y}_i = w^\top x_i,\]</span> where <span
+class="math display">\[(1 \times d)(d \times 1) = 1 \times 1.\]</span>
+Thus, <span class="math inline">\(w^\top x_i\)</span> is a scalar, as
+required to model a real-valued output such as house price.</p>
+<p>Explicitly, this dot product can be written as <span
+class="math display">\[w^\top x_i = w_1 x_{i1} + w_2 x_{i2} + \cdots +
+w_d x_{id},\]</span> which shows that the linear model is a weighted sum
+of the input features.</p>
+<h2 id="consistency-with-matrix-formulation">Consistency with Matrix
+Formulation</h2>
+<p>When stacking all feature vectors into the design matrix <span
+class="math display">\[X =
+\begin{bmatrix}
+x_1^\top \\
+x_2^\top \\
+\vdots \\
+x_n^\top
+\end{bmatrix}
+\in \mathbb{R}^{n \times d},\]</span> each row of <span
+class="math inline">\(X\)</span> corresponds to a single data point
+written as a transposed feature vector. The matrix–vector product <span
+class="math display">\[Xw\]</span> then yields an <span
+class="math inline">\(n \times 1\)</span> vector, where the <span
+class="math inline">\(i\)</span>-th entry is precisely <span
+class="math inline">\(w^\top x_i\)</span>. This ensures dimensional
+consistency between the individual prediction formula and the global
+matrix formulation.</p>
+<p>This careful handling of vector orientation is not merely a
+notational choice; it is essential for extending linear regression to
+high-dimensional settings and for implementing learning algorithms
+correctly in numerical software.</p>
+
+</div>
+<div class="page-content" id="page-8">
+<h2 id="normal-equations">Normal Equations</h2>
+<p>To find the minimizer, we differentiate the loss function with
+respect to <span class="math inline">\(w\)</span>: <span
+class="math display">\[\frac{\partial}{\partial w} \|Xw - y\|^2 =
+\frac{\partial}{\partial w} (Xw - y)^\top (Xw - y) =\]</span> How we
+achieve this is by applying the chain rule and properties of matrix
+calculus. Let us derive from scratch in high detail: <span
+class="math display">\[\begin{aligned}
+\frac{\partial}{\partial w} \|Xw - y\|^2 &amp;= \frac{\partial}{\partial
+w} (Xw - y)^\top (Xw - y) \\
+&amp;= \frac{\partial}{\partial w} \left( w^\top X^\top X w - 2 y^\top X
+w + y^\top y \right) \\
+&amp;= 2 X^\top X w - 2 X^\top y.
+\end{aligned}\]</span> Why above? Because we use the following rules of
+matrix calculus:</p>
+<ul>
+<li><p>For a vector <span class="math inline">\(a\)</span>, <span
+class="math inline">\(\frac{\partial}{\partial w} (w^\top a) =
+a\)</span>. For the derivative <span
+class="math inline">\(\frac{\partial}{\partial w} (w^\top a)\)</span>,
+we use the linearity of differentiation. Since <span
+class="math inline">\(w^\top a = \sum_j w_j a_j\)</span>, we have <span
+class="math inline">\(\frac{\partial}{\partial w_i} (w^\top a) =
+a_i\)</span>, which gives <span
+class="math inline">\(\frac{\partial}{\partial w} (w^\top a) =
+a\)</span>.</p></li>
+<li><p>For a matrix <span class="math inline">\(A\)</span>, <span
+class="math inline">\(\frac{\partial}{\partial w} (w^\top A w) = (A +
+A^\top) w\)</span>. If <span class="math inline">\(A\)</span> is
+symmetric, this simplifies to <span class="math inline">\(2 A
+w\)</span>.</p>
+<p>For a symmetric matrix <span class="math inline">\(A\)</span>, we
+have <span class="math inline">\(\frac{\partial}{\partial w} (w^\top A
+w) = 2 A w\)</span>. To see this, expand <span
+class="math inline">\(w^\top A w = \sum_i \sum_j w_i A_{ij}
+w_j\)</span>. Then <span class="math inline">\(\frac{\partial}{\partial
+w_k}(w^\top A w) = \sum_j A_{kj} w_j + \sum_i w_i A_{ik} = \sum_j
+(A_{kj} + A_{jk}) w_j\)</span>. Since <span
+class="math inline">\(A\)</span> is symmetric, <span
+class="math inline">\(A_{jk} = A_{kj}\)</span>, so this becomes <span
+class="math inline">\(2 \sum_j A_{kj} w_j = 2(Aw)_k\)</span>, giving
+<span class="math inline">\(\frac{\partial}{\partial w}(w^\top A w) =
+2Aw\)</span>.</p></li>
+</ul>
+<p>Setting the gradient to zero yields the normal equations: <span
+class="math display">\[X^\top X w = X^\top y.\]</span></p>
+<p>These equations form a system of <span
+class="math inline">\(d\)</span> linear equations in <span
+class="math inline">\(d\)</span> unknowns. Unlike the original system
+<span class="math inline">\(Xw = y\)</span>, the normal equations are
+consistent under mild conditions.</p>
+
+</div>
+<div class="page-content" id="page-9">
+<h2 id="closed-form-solution">Closed-Form Solution</h2>
+<p>If the matrix <span class="math inline">\(X^\top X\)</span> is
+invertible, the solution to the normal equations is given by <span
+class="math display">\[w = (X^\top X)^{-1} X^\top y.\]</span> This
+expression provides a closed-form formula for the linear regression
+estimator. It characterizes the theoretical solution but is not always
+used directly in practice due to computational and numerical stability
+considerations.</p>
+
+</div>
+<div class="page-content" id="page-10">
+<h2 id="geometric-interpretation">Geometric Interpretation</h2>
+<p>From a geometric perspective, the columns of <span
+class="math inline">\(X\)</span> span a subspace of <span
+class="math inline">\(\mathbb{R}^n\)</span>, known as the column space
+of <span class="math inline">\(X\)</span>. The vector <span
+class="math inline">\(Xw\)</span> represents a point in this subspace.
+Linear regression finds the vector <span
+class="math inline">\(Xw\)</span> that is closest to <span
+class="math inline">\(y\)</span> in Euclidean distance. Consequently,
+the residual vector <span class="math inline">\(r = Xw - y\)</span> is
+orthogonal to the column space of <span
+class="math inline">\(X\)</span>, which explains the condition <span
+class="math display">\[X^\top r = 0.\]</span> Thus, linear regression
+can be interpreted as the orthogonal projection of <span
+class="math inline">\(y\)</span> onto the column space of <span
+class="math inline">\(X\)</span>.</p>
+<h2 id="why-linear-regression-is-a-machine-learning-model">Why Linear
+Regression Is a Machine Learning Model</h2>
+<p>Linear regression qualifies as a machine learning model because its
+parameters are inferred from data rather than specified explicitly, the
+data typically contains noise and inconsistencies, and the learned model
+is used to make predictions on unseen data. The process involves
+empirical risk minimization rather than exact algebraic solution.</p>
+<h2 id="scalability-and-numerical-methods">Scalability and Numerical
+Methods</h2>
+<p>In modern machine learning applications, the number of data points
+<span class="math inline">\(n\)</span> may be in the millions and the
+number of features <span class="math inline">\(d\)</span> may be in the
+thousands. In such settings, forming and inverting <span
+class="math inline">\(X^\top X\)</span> is computationally expensive and
+numerically unstable. Consequently, linear regression is commonly solved
+using numerical optimization methods such as gradient descent,
+stochastic gradient descent, or iterative linear solvers. These methods
+approximate the solution to the normal equations efficiently at
+scale.</p>
+
+</div>
+<div class="page-content" id="page-11">
+<h2 id="conceptual-summary">Conceptual Summary</h2>
+<p>Linear regression transforms an inconsistent, overdetermined system
+of linear equations into a well-posed optimization problem. It replaces
+the impossible requirement of satisfying all equations exactly with the
+achievable goal of minimizing overall error. In this sense, linear
+regression is best understood as numerical linear algebra applied to
+real-world data.</p>
+<p>Now let us return to our housing price example and compute the
+optimal weights using the least squares approach. We have the design
+matrix <span class="math display">\[X =
+\begin{bmatrix}
+10 &amp; 2 \\
+20 &amp; 3 \\
+15 &amp; 2
+\end{bmatrix},\]</span> and the output vector <span
+class="math display">\[y =
+\begin{bmatrix} 70 \\ 130 \\ 100 \end{bmatrix}.\]</span> The normal
+equations are <span class="math display">\[X^\top X w = X^\top
+y.\]</span> Calculating <span class="math inline">\(X^\top X\)</span>
+and <span class="math inline">\(X^\top y\)</span>: <span
+class="math display">\[X^\top X =
+\begin{bmatrix}10 &amp; 20 &amp; 15 \\
+2 &amp; 3 &amp; 2\end{bmatrix}
+\begin{bmatrix}10 &amp; 2 \\
+20 &amp; 3 \\
+15 &amp; 2\end{bmatrix}
+=
+\begin{bmatrix}725 &amp; 110 \\
+110 &amp; 17\end{bmatrix},\]</span> and <span
+class="math display">\[X^\top y =
+\begin{bmatrix}10 &amp; 20 &amp; 15 \\
+2 &amp; 3 &amp; 2\end{bmatrix}
+\begin{bmatrix}70 \\ 130 \\ 100\end{bmatrix}
+=
+\begin{bmatrix}
+10(70) + 20(130) + 15(100) \\
+2(70) + 3(130) + 2(100)
+\end{bmatrix}\]</span> <span class="math display">\[=
+\begin{bmatrix}
+700 + 2600 + 1500 \\
+140 + 390 + 200
+\end{bmatrix}
+=
+\begin{bmatrix}4800 \\ 730\end{bmatrix}.\]</span> Thus, the normal
+equations become <span class="math display">\[\begin{bmatrix}725 &amp;
+110 \\
+110 &amp; 17\end{bmatrix}
+\begin{bmatrix}w_1 \\ w_2\end{bmatrix}
+=
+\begin{bmatrix}4800 \\ 730\end{bmatrix}.\]</span> Solving via the
+determinant <span class="math inline">\(\Delta = 725 \cdot 17 - 110^2 =
+12325 - 12100 = 225\)</span>: <span
+class="math display">\[\begin{bmatrix}w_1 \\ w_2\end{bmatrix}
+=
+\frac{1}{225}\begin{bmatrix}17 &amp; -110 \\ -110 &amp; 725\end{bmatrix}
+\begin{bmatrix}4800 \\ 730\end{bmatrix}\]</span> <span
+class="math display">\[=
+\frac{1}{225}\begin{bmatrix}
+81600 - 80300 \\
+-528000 + 529250
+\end{bmatrix}
+=
+\frac{1}{225}\begin{bmatrix}1300 \\ 1250\end{bmatrix}
+=
+\begin{bmatrix}5.78 \\ 5.56\end{bmatrix}.\]</span> Thus <span
+class="math inline">\(w_1 \approx 5.78\)</span> and <span
+class="math inline">\(w_2 \approx 5.56\)</span>, representing the
+best-fit weights that minimize the squared error across all three data
+points. How come we got different weights than before? Because now we
+are minimizing the squared error across all three data points, rather
+than trying to fit exactly two points. Earlier weights were 5 and 10,
+which perfectly fit the first two points but did not account for the
+third point. Now with third point weights became approximately 5.78 and
+5.56, which balance the errors across all three points. Let us check the
+predictions: <span class="math display">\[\hat{y}_1 = 5.78 \cdot 10 +
+5.56 \cdot 2 = \approx 70.0,\]</span> <span
+class="math display">\[\hat{y}_2 = 5.78 \cdot 20 + 5.56 \cdot 3 \approx
+130.0,\]</span> <span class="math display">\[\hat{y}_3 = 5.78 \cdot 15 +
+5.56 \cdot 2 \approx 100.0.\]</span> but actually <span
+class="math display">\[\hat{y}_1 = 5.78 \cdot 10 + 5.56 \cdot 2 = 57.8 +
+11.12 = 68.92,\]</span> <span class="math display">\[\hat{y}_2 = 5.78
+\cdot 20 + 5.56 \cdot 3 = 115.6 + 16.68 = 132.28,\]</span> <span
+class="math display">\[\hat{y}_3 = 5.78 \cdot 15 + 5.56 \cdot 2 = 86.7 +
+11.12 = 97.82.\]</span></p>
+<p>In practice, computing matrix inverses is computationally expensive
+and numerically unstable. Instead, we use gradient descent to minimize
+<span class="math inline">\(\mathcal{L}(w) = \|Xw - y\|^2\)</span>
+iteratively, starting from an initial guess <span
+class="math inline">\(w^{(0)} = 0\)</span>: <span
+class="math display">\[w^{(k+1)} = w^{(k)} - \eta \nabla
+\mathcal{L}(w^{(k)}),\]</span> where <span
+class="math inline">\(\eta\)</span> is the learning rate. The gradient
+<span class="math inline">\(\nabla \mathcal{L}(w)\)</span> is given by
+<span class="math display">\[\nabla \mathcal{L}(w) = 2 X^\top (Xw -
+y).\]</span> By repeatedly applying this update rule, we can converge to
+the optimal weights without explicitly computing the matrix inverse. Why
+this works? Because gradient descent is an optimization algorithm that
+iteratively moves towards the minimum of a function by taking steps
+proportional to the negative of the gradient. In the case of linear
+regression, the loss function is convex, ensuring that gradient descent
+will converge to the global minimum. Here is a pictural representation
+of gradient descent:</p>
+<p>First recall what is convexity. A function <span
+class="math inline">\(f: \mathbb{R}^d \to \mathbb{R}\)</span> is convex
+if for any two points <span class="math inline">\(x, y \in
+\mathbb{R}^d\)</span> and any <span class="math inline">\(\theta \in [0,
+1]\)</span>, <span class="math display">\[f(\theta x + (1 - \theta) y)
+\leq \theta f(x) + (1 - \theta) f(y).\]</span> Geometrically, this means
+that the line segment connecting any two points on the graph of the
+function lies above or on the graph itself. Convex functions have a
+single global minimum, making optimization problems easier to solve. Why
+they have a single global minimum? Because if there were two distinct
+local minima, the line segment connecting them would violate the
+convexity condition.</p>
+<p>Why loss function is convex, ensuring that gradient descent will
+converge to the global minimum. To prove that the loss function <span
+class="math inline">\(\mathcal{L}(w) = \|Xw - y\|^2\)</span> is convex,
+we can show that its Hessian matrix is positive semidefinite. The
+Hessian matrix of <span class="math inline">\(\mathcal{L}(w)\)</span> is
+given by <span class="math display">\[H = \nabla^2 \mathcal{L}(w) = 2
+X^\top X.\]</span> To show that <span class="math inline">\(H\)</span>
+is positive semidefinite, we need to show that for any non-zero vector
+<span class="math inline">\(z \in \mathbb{R}^d\)</span>, <span
+class="math display">\[z^\top H z \geq 0.\]</span> Calculating <span
+class="math inline">\(z^\top H z\)</span>: <span
+class="math display">\[z^\top H z = z^\top (2 X^\top X) z = 2 (X z)^\top
+(X z) = 2 \|X z\|^2 \geq 0.\]</span> Since <span
+class="math inline">\(\|X z\|^2\)</span> is always non-negative, it
+follows that <span class="math inline">\(H\)</span> is positive
+semidefinite. Therefore, the loss function <span
+class="math inline">\(\mathcal{L}(w)\)</span> is convex.</p>
+<p>We need to justify why this gradient descent is a good idea. Gradient
+descent is a good idea for several reasons:</p>
+<ul>
+<li><p><strong>Scalability</strong>: Gradient descent can handle large
+datasets and high-dimensional feature spaces efficiently, as it does not
+require storing or inverting large matrices.</p></li>
+<li><p><strong>Flexibility</strong>: It can be easily adapted to
+different loss functions and regularization techniques.</p></li>
+<li><p><strong>Convergence Guarantees</strong>: For convex loss
+functions, gradient descent is guaranteed to converge to the global
+minimum, provided an appropriate learning rate is chosen.</p></li>
+<li><p><strong>Simplicity</strong>: The algorithm is straightforward to
+implement and understand, making it accessible for
+practitioners.</p></li>
+</ul>
+<p>Why computing inverse of a matrix is computationally expensive and
+numerically unstable? Computing the inverse of a matrix, especially
+large matrices, can be computationally expensive due to the time
+complexity of matrix inversion algorithms, which is typically <span
+class="math inline">\(O(d^3)\)</span> for a <span
+class="math inline">\(d \times d\)</span> matrix. This becomes
+prohibitive for high-dimensional data. Additionally, matrix inversion
+can be numerically unstable if the matrix is ill-conditioned (i.e., has
+a high condition number), leading to significant errors in the computed
+inverse. Small perturbations in the input data can result in large
+changes in the inverse, making it unreliable for practical applications.
+But in contrast, gradient descent avoids these issues by iteratively
+refining the solution without requiring matrix inversion, making it more
+robust and efficient for large-scale problems. So let us now implement
+gradient descent to find the optimal weights for our housing price
+prediction problem by iteratively updating the weights until convergence
+by calculating the gradient at each step non programmatically. Starting
+with an initial guess <span class="math inline">\(w^{(0)} =
+\begin{bmatrix}0 \\ 0\end{bmatrix}\)</span> and a learning rate <span
+class="math inline">\(\eta = 0.0001\)</span>, we compute the gradient at
+each step: <span class="math display">\[\nabla \mathcal{L}(w^{(k)}) = 2
+X^\top (X w^{(k)} - y).\]</span> We then update the weights: <span
+class="math display">\[w^{(k+1)} = w^{(k)} - \eta \nabla
+\mathcal{L}(w^{(k)}).\]</span> Repeating this process and get the
+following sequence of weight updates: <span
+class="math display">\[\begin{aligned}
+w^{(0)} &amp;= \begin{bmatrix}0 \\ 0\end{bmatrix}, \\
+w^{(1)} &amp;\approx \begin{bmatrix}0.096 \\ 0.015\end{bmatrix}, \\
+w^{(2)} &amp;\approx \begin{bmatrix}0.187 \\ 0.028\end{bmatrix}, \\
+w^{(3)} &amp;\approx \begin{bmatrix}0.273 \\ 0.040\end{bmatrix}, \\
+&amp;\vdots \\
+w^{(1000)} &amp;\approx \begin{bmatrix}5.562 \\ 5.722\end{bmatrix}.
+\end{aligned}\]</span> After sufficient iterations, the weights converge
+to approximately <span class="math inline">\(\begin{bmatrix}5.562 \\
+5.722\end{bmatrix}\)</span>, which is very close to the closed-form
+solution we computed earlier. This demonstrates the effectiveness of
+gradient descent in finding the optimal weights for linear regression.
+There are many small things to consider here like how to choose the
+learning rate, when to stop the iterations (convergence criteria), etc.
+Below is a pictorial representation of gradient descent converging to
+the optimal weights:<br />
+</p>
+<p><br />
+The small things to consider here like how to choose the learning rate,
+when to stop the iterations (convergence criteria), etc. are important
+practical aspects of implementing gradient descent effectively. See
+summary below:</p>
+<ul>
+<li><p><strong>Learning Rate</strong>: A small learning rate may lead to
+slow convergence, while a large learning rate may cause divergence.
+Techniques like learning rate schedules or adaptive learning rates
+(e.g., Adam, RMSprop) can help.</p></li>
+<li><p><strong>Convergence Criteria</strong>: Common criteria include a
+maximum number of iterations, a threshold on the change in loss between
+iterations, or a threshold on the norm of the gradient.</p></li>
+<li><p><strong>Batch Size</strong>: In practice, stochastic gradient
+descent (SGD) or mini-batch gradient descent is often used, where
+gradients are computed on subsets of the data to improve efficiency and
+convergence.</p></li>
+<li><p><strong>Regularization</strong>: Techniques like L2
+regularization (Ridge regression) or L1 regularization (Lasso) can be
+incorporated to prevent overfitting and improve generalization.</p></li>
+</ul>
+<p>We will learn these small things in detail in later lectures. But for
+now, let us completely change our perspective and derive linear
+regression from a probabilistic viewpoint. For this let us recall our
+housing price prediction problem. We have the design matrix <span
+class="math display">\[X =
+\begin{bmatrix}
+10 &amp; 2 \\
+20 &amp; 3 \\
+15 &amp; 2
+\end{bmatrix},\]</span> and the output vector <span
+class="math display">\[y =
+\begin{bmatrix} 70 \\ 125 \\ 95 \end{bmatrix}.\]</span> We will now
+assume a probabilistic model for the data generation process.
+Specifically, we assume that the observed prices are generated according
+to the linear model plus Gaussian noise: <span
+class="math display">\[y_i = w^\top x_i + \epsilon_i,\]</span> where
+<span class="math inline">\(\epsilon_i \sim \mathcal{N}(0,
+\sigma^2)\)</span> are independent and identically distributed Gaussian
+noise terms with mean zero and variance <span
+class="math inline">\(\sigma^2\)</span>. This assumption reflects the
+idea that the true relationship between features and prices is linear,
+but there are random fluctuations due to unobserved factors. Recall
+probability basics below:</p>
+<h3 id="probability-basics">Probability Basics</h3>
+<p>Before diving into the probabilistic interpretation of linear
+regression, it is essential to review foundational concepts in
+probability theory.</p>
+<h4 id="sample-space-and-events">Sample Space and Events</h4>
+<p>The <strong>sample space</strong> <span
+class="math inline">\(\Omega\)</span> is the set of all possible
+outcomes of a random experiment. An <strong>event</strong> is a subset
+of the sample space. For example, when rolling a fair die, <span
+class="math inline">\(\Omega = \{1, 2, 3, 4, 5, 6\}\)</span>, and the
+event “rolling an even number” is <span class="math inline">\(\{2, 4,
+6\}\)</span>.</p>
+<h4 id="probability-of-an-event">Probability of an Event</h4>
+<p>The <strong>probability</strong> of an event <span
+class="math inline">\(A\)</span>, denoted <span
+class="math inline">\(P(A)\)</span>, is a number in <span
+class="math inline">\([0, 1]\)</span> satisfying:</p>
+<ul>
+<li><p><span class="math inline">\(P(\Omega) = 1\)</span> (the sample
+space has probability 1).</p></li>
+<li><p><span class="math inline">\(P(\emptyset) = 0\)</span> (the empty
+event has probability 0).</p></li>
+<li><p>For mutually exclusive events <span class="math inline">\(A_1,
+A_2, \ldots\)</span>, we have <span class="math inline">\(P(A_1 \cup A_2
+\cup \cdots) = P(A_1) + P(A_2) + \cdots\)</span>.</p></li>
+</ul>
+<h4 id="random-variables">Random Variables</h4>
+<p>A <strong>random variable</strong> <span
+class="math inline">\(X\)</span> is a function that assigns a numerical
+value to each outcome in the sample space. Random variables can be
+<strong>discrete</strong> (taking values in a countable set) or
+<strong>continuous</strong> (taking values in an interval or uncountable
+set). For example, the outcome of a die roll is a discrete random
+variable, while the height of a person is continuous.</p>
+<h4 id="probability-distributions">Probability Distributions</h4>
+<p>A <strong>probability distribution</strong> describes how probability
+is distributed over the possible values of a random variable.</p>
+<p>For a <strong>discrete random variable</strong> <span
+class="math inline">\(X\)</span> taking values <span
+class="math inline">\(x_1, x_2, \ldots\)</span>, the <strong>probability
+mass function</strong> (PMF) is <span class="math inline">\(p(x_i) = P(X
+= x_i)\)</span>. The probabilities satisfy <span
+class="math inline">\(\sum_i p(x_i) = 1\)</span>.</p>
+<p>For a <strong>continuous random variable</strong> <span
+class="math inline">\(X\)</span>, the <strong>probability density
+function</strong> (PDF) is <span class="math inline">\(f(x)\)</span>,
+which satisfies <span class="math inline">\(\int_{-\infty}^{\infty} f(x)
+\, dx = 1\)</span>. The probability that <span
+class="math inline">\(X\)</span> lies in an interval <span
+class="math inline">\([a, b]\)</span> is <span
+class="math display">\[P(a \leq X \leq b) = \int_a^b f(x) \,
+dx.\]</span></p>
+<h4 id="cumulative-distribution-function">Cumulative Distribution
+Function</h4>
+<p>The <strong>cumulative distribution function</strong> (CDF) is
+defined as <span class="math display">\[F(x) = P(X \leq x).\]</span> For
+a continuous random variable with PDF <span
+class="math inline">\(f(x)\)</span>, we have <span
+class="math inline">\(F(x) = \int_{-\infty}^x f(t) \, dt\)</span>, and
+the PDF is the derivative of the CDF: <span class="math inline">\(f(x) =
+\frac{dF(x)}{dx}\)</span>.</p>
+<h4 id="expected-value">Expected Value</h4>
+<p>The <strong>expected value</strong> (or mean) of a random variable
+<span class="math inline">\(X\)</span> is a measure of its central
+tendency.</p>
+<p>For a discrete random variable, <span class="math display">\[E[X] =
+\sum_i x_i \cdot p(x_i).\]</span></p>
+<p>For a continuous random variable, <span class="math display">\[E[X] =
+\int_{-\infty}^{\infty} x \cdot f(x) \, dx.\]</span></p>
+<p>The expected value is linear: <span class="math inline">\(E[aX + b] =
+aE[X] + b\)</span> for constants <span class="math inline">\(a\)</span>
+and <span class="math inline">\(b\)</span>.</p>
+<h4 id="variance-and-standard-deviation">Variance and Standard
+Deviation</h4>
+<p>The <strong>variance</strong> of a random variable <span
+class="math inline">\(X\)</span> measures the spread of its distribution
+around the mean: <span class="math display">\[\text{Var}(X) = E[(X -
+E[X])^2] = E[X^2] - (E[X])^2.\]</span></p>
+<p>The <strong>standard deviation</strong> is <span
+class="math inline">\(\sigma = \sqrt{\text{Var}(X)}\)</span>.</p>
+<p>Properties of variance include:</p>
+<ul>
+<li><p><span class="math inline">\(\text{Var}(aX + b) = a^2
+\text{Var}(X)\)</span> for constants <span
+class="math inline">\(a\)</span> and <span
+class="math inline">\(b\)</span>.</p></li>
+<li><p><span class="math inline">\(\text{Var}(X) \geq 0\)</span>, with
+equality if and only if <span class="math inline">\(X\)</span> is
+constant almost surely.</p></li>
+</ul>
+<h4 id="normal-distribution">Normal Distribution</h4>
+<p>The <strong>Gaussian</strong> or <strong>normal distribution</strong>
+is one of the most important distributions in probability and
+statistics. A continuous random variable <span
+class="math inline">\(X\)</span> follows a normal distribution with mean
+<span class="math inline">\(\mu\)</span> and variance <span
+class="math inline">\(\sigma^2\)</span>, denoted <span
+class="math inline">\(X \sim \mathcal{N}(\mu, \sigma^2)\)</span>, if its
+PDF is <span class="math display">\[f(x) = \frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right).\]</span></p>
+<p>Key properties of the normal distribution include:</p>
+<ul>
+<li><p>The PDF is symmetric about <span
+class="math inline">\(\mu\)</span> and bell-shaped.</p></li>
+<li><p>The mean, median, and mode are all equal to <span
+class="math inline">\(\mu\)</span>.</p></li>
+<li><p>Approximately 68% of the probability mass lies within one
+standard deviation of the mean: <span class="math inline">\(P(\mu -
+\sigma \leq X \leq \mu + \sigma) \approx 0.68\)</span>.</p></li>
+<li><p>Approximately 95% lies within two standard deviations: <span
+class="math inline">\(P(\mu - 2\sigma \leq X \leq \mu + 2\sigma) \approx
+0.95\)</span>.</p></li>
+<li><p>Approximately 99.7% lies within three standard
+deviations.</p></li>
+</ul>
+<p>The <strong>standard normal distribution</strong> has mean <span
+class="math inline">\(\mu = 0\)</span> and variance <span
+class="math inline">\(\sigma^2 = 1\)</span>, often denoted <span
+class="math inline">\(\mathcal{N}(0, 1)\)</span>.</p>
+<h4 id="multivariate-normal-distribution">Multivariate Normal
+Distribution</h4>
+<p>When dealing with multiple random variables, we use the
+<strong>multivariate normal distribution</strong>. A random vector <span
+class="math inline">\(\mathbf{x} \in \mathbb{R}^d\)</span> follows a
+multivariate normal distribution with mean vector <span
+class="math inline">\(\boldsymbol{\mu} \in \mathbb{R}^d\)</span> and
+covariance matrix <span class="math inline">\(\boldsymbol{\Sigma} \in
+\mathbb{R}^{d \times d}\)</span>, denoted <span
+class="math inline">\(\mathbf{x} \sim \mathcal{N}(\boldsymbol{\mu},
+\boldsymbol{\Sigma})\)</span>, if its PDF is <span
+class="math display">\[f(\mathbf{x}) = \frac{1}{(2\pi)^{d/2}
+|\boldsymbol{\Sigma}|^{1/2}} \exp\left(-\frac{1}{2}(\mathbf{x} -
+\boldsymbol{\mu})^\top \boldsymbol{\Sigma}^{-1} (\mathbf{x} -
+\boldsymbol{\mu})\right),\]</span> where <span
+class="math inline">\(|\boldsymbol{\Sigma}|\)</span> denotes the
+determinant of <span
+class="math inline">\(\boldsymbol{\Sigma}\)</span>.</p>
+<h4 id="independence">Independence</h4>
+<p>Two random variables <span class="math inline">\(X\)</span> and <span
+class="math inline">\(Y\)</span> are <strong>independent</strong> if
+knowledge of one provides no information about the other. Formally, they
+are independent if <span class="math display">\[P(X = x \text{ and } Y =
+y) = P(X = x) \cdot P(Y = y)\]</span> for all values <span
+class="math inline">\(x\)</span> and <span
+class="math inline">\(y\)</span> (in the discrete case), or if their
+joint PDF factors as <span class="math inline">\(f_{X,Y}(x, y) = f_X(x)
+\cdot f_Y(y)\)</span> (in the continuous case).</p>
+<h4 id="conditional-probability">Conditional Probability</h4>
+<p>The <strong>conditional probability</strong> of event <span
+class="math inline">\(A\)</span> given event <span
+class="math inline">\(B\)</span> is <span class="math display">\[P(A
+\mid B) = \frac{P(A \text{ and } B)}{P(B)},\]</span> provided <span
+class="math inline">\(P(B) &gt; 0\)</span>.</p>
+<h4 id="bayes-theorem">Bayes’ Theorem</h4>
+<p><strong>Bayes’ theorem</strong> relates conditional probabilities:
+<span class="math display">\[P(A \mid B) = \frac{P(B \mid A) \cdot
+P(A)}{P(B)}.\]</span> This theorem is fundamental in machine learning
+and statistical inference, allowing us to update beliefs (posterior)
+based on new evidence (likelihood) and prior knowledge (prior).</p>
+<h4 id="likelihood">Likelihood</h4>
+<p>In the context of parameter estimation, the
+<strong>likelihood</strong> is the probability of observing the data
+given a particular value of the parameter. If we have data <span
+class="math inline">\(\mathbf{y} = (y_1, \ldots, y_n)\)</span> and
+parameter <span class="math inline">\(w\)</span>, the likelihood is
+<span class="math display">\[L(w \mid \mathbf{y}) = P(\mathbf{y} \mid
+w).\]</span> The <strong>log-likelihood</strong> is <span
+class="math inline">\(\ell(w) = \log L(w \mid \mathbf{y})\)</span>,
+which is often easier to work with computationally.</p>
+<h4 id="maximum-likelihood-estimation">Maximum Likelihood
+Estimation</h4>
+<p><strong>Maximum likelihood estimation</strong> (MLE) is a method for
+estimating parameters by choosing the parameter value that maximizes the
+likelihood of the observed data: <span class="math display">\[\hat{w} =
+\arg\max_w L(w \mid \mathbf{y}) = \arg\max_w \ell(w \mid
+\mathbf{y}).\]</span></p>
+<p>These concepts will be essential for understanding the probabilistic
+formulation of linear regression, where we model noise using the normal
+distribution and estimate parameters via maximum likelihood. Do all
+models with noise follow this approach? No, not all models with noise
+follow this approach. While the Gaussian noise assumption is common due
+to its mathematical convenience and the Central Limit Theorem, other
+noise distributions can be used depending on the nature of the data and
+the specific application. For example, if the noise is believed to be
+heavy-tailed, a Laplace distribution might be more appropriate.
+Similarly, for count data, a Poisson distribution could be used. The
+choice of noise model affects the likelihood function and consequently
+the parameter estimation method. Recall that the Central Limit Theorem
+states that the sum of a large number of independent random variables,
+regardless of their individual distributions, tends to follow a normal
+distribution, provided certain conditions are met. This theorem
+justifies the common use of Gaussian noise in modeling real-world
+phenomena, as many types of measurement errors and natural variations
+can be viewed as the cumulative effect of numerous small, independent
+factors. In the house price example, are the noise really independent
+and identically distributed Gaussian? In practice, the assumption of
+independent and identically distributed (i.i.d.) Gaussian noise may not
+always hold true in real-world scenarios. While it is a convenient and
+widely used assumption, there are several factors that can lead to
+violations of this assumption:</p>
+<ul>
+<li><p><strong>Heteroscedasticity</strong>: The variance of the noise
+may change with the level of the input features. For example, more
+expensive houses might have larger price fluctuations.</p></li>
+<li><p><strong>Autocorrelation</strong>: In time series data or spatial
+data, errors may be correlated with each other, violating the
+independence assumption.</p></li>
+<li><p><strong>Non-Gaussian Noise</strong>: The noise distribution may
+not be Gaussian; it could be skewed or have heavier tails than a normal
+distribution.</p></li>
+<li><p><strong>Outliers</strong>: Real-world data often contains
+outliers that can significantly affect the model fit and violate the
+i.i.d. assumption.</p></li>
+</ul>
+<p>Despite these potential violations, the Gaussian noise assumption is
+often used as a first approximation due to its mathematical tractability
+and the Central Limit Theorem. However, it is important to assess the
+validity of this assumption in practice and consider alternative models
+or robust estimation techniques if necessary. Now let us derive the
+likelihood function for our linear regression model under the Gaussian
+noise assumption.</p>
+
+</div>
+<div class="page-content" id="page-12">
+<h2 id="likelihood-function">Likelihood Function</h2>
+<p>Given the model <span class="math display">\[y_i = w^\top x_i +
+\epsilon_i,\]</span> where <span class="math inline">\(\epsilon_i \sim
+\mathcal{N}(0, \sigma^2)\)</span>, the conditional probability of
+observing <span class="math inline">\(y_i\)</span> given <span
+class="math inline">\(x_i\)</span> and parameters <span
+class="math inline">\(w\)</span> is <span class="math display">\[P(y_i
+\mid x_i, w) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(y_i -
+w^\top x_i)^2}{2\sigma^2}\right).\]</span> Assuming the data points are
+independent, the likelihood of observing the entire dataset <span
+class="math inline">\((X, y)\)</span> is the product of the individual
+probabilities: <span class="math display">\[L(w \mid X, y) =
+\prod_{i=1}^n P(y_i \mid x_i, w) =
+\left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^n
+\exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - w^\top
+x_i)^2\right).\]</span> Taking the logarithm of the likelihood function
+gives the log-likelihood: <span class="math display">\[\ell(w \mid X, y)
+= -\frac{n}{2} \log(2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^n
+(y_i - w^\top x_i)^2.\]</span> To find the maximum likelihood estimate
+of <span class="math inline">\(w\)</span>, we can ignore the constant
+term <span class="math inline">\(-\frac{n}{2}
+\log(2\pi\sigma^2)\)</span> and focus on maximizing the negative of the
+sum of squared errors: <span class="math display">\[\hat{w} = \arg\min_w
+\sum_{i=1}^n (y_i - w^\top x_i)^2.\]</span> This is precisely the same
+optimization problem we encountered in the least squares formulation of
+linear regression. Thus, the maximum likelihood estimate of <span
+class="math inline">\(w\)</span> under the Gaussian noise assumption
+coincides with the least squares solution. This connection highlights
+the probabilistic interpretation of linear regression as fitting a model
+that maximizes the likelihood of the observed data under a Gaussian
+noise model.</p>
+<h1 id="principal-component-analysis-pca">Principal component analysis
+(PCA)</h1>
+<p>Principal Component Analysis (PCA) is a dimensionality reduction
+technique used to reduce the number of features in a dataset while
+retaining as much variance as possible. It achieves this by identifying
+the directions (principal components) along which the data varies the
+most.</p>
+<h1 class="unnumbered"
+id="principal-component-analysis-pca-philosophy-and-foundations">Principal
+Component Analysis (PCA): Philosophy and Foundations</h1>
+<h2 class="unnumbered" id="from-prediction-to-representation">1. From
+Prediction to Representation</h2>
+<p>In linear regression, we study a supervised problem: <span
+class="math display">\[y = Xw + \varepsilon,\]</span> where the goal is
+to predict an output variable <span class="math inline">\(y\)</span>
+(e.g. house price) from features <span
+class="math inline">\(X\)</span>.</p>
+<p>In PCA, we deliberately remove the output variable <span
+class="math inline">\(y\)</span> and ask a different question:</p>
+<blockquote>
+<p><em>Given only the feature data <span
+class="math inline">\(X\)</span>, how can we describe or represent the
+data as faithfully as possible using fewer numbers?</em></p>
+</blockquote>
+<p>Thus PCA is an <em>unsupervised</em> method whose goal is not
+prediction, but <em>representation and compression of data</em>.</p>
+<p>—</p>
+<h2 class="unnumbered" id="data-setup-and-mean-centering">2. Data Setup
+and Mean Centering</h2>
+<p>Let <span class="math display">\[x_1, x_2, \dots, x_n \in
+\mathbb{R}^d\]</span> be data points (e.g. houses described by size,
+bedrooms, etc.).</p>
+<h4 id="compact-vector-notation">Compact Vector Notation</h4>
+<p>Since each data point <span class="math inline">\(x_i\)</span> is a
+<span class="math inline">\(d\)</span>-dimensional vector, the mean is
+computed as a vector average: <span class="math display">\[\mu =
+\frac{1}{n}\sum_{i=1}^n x_i = \begin{bmatrix} \mu_1 \\ \mu_2 \\ \vdots
+\\ \mu_d \end{bmatrix} \in \mathbb{R}^d,\]</span> where each component
+<span class="math inline">\(\mu_j\)</span> is the average of the <span
+class="math inline">\(j\)</span>-th feature across all data points. When
+we subtract <span class="math inline">\(\mu\)</span> from <span
+class="math inline">\(x_i\)</span>, we perform component-wise
+subtraction: <span class="math display">\[x_i - \mu = \begin{bmatrix}
+x_{i1} - \mu_1 \\ x_{i2} - \mu_2 \\ \vdots \\ x_{id} - \mu_d
+\end{bmatrix}.\]</span> This compact notation <span
+class="math inline">\(x_i \leftarrow x_i - \mu\)</span> applies
+uniformly regardless of dimensionality.</p>
+<p>We first perform mean centering: <span class="math display">\[x_i
+\leftarrow x_i - \mu,
+\quad
+\text{where }
+\mu = \frac{1}{n}\sum_{i=1}^n x_i.\]</span></p>
+<p>After centering, <span class="math display">\[\frac{1}{n}\sum_{i=1}^n
+x_i = 0.\]</span></p>
+<p>Mean centering ensures that we study <em>variation around the
+average</em>, which is essential for defining variance and
+covariance.</p>
+<p>—</p>
+<h2 class="unnumbered"
+id="covariance-matrix-as-a-summary-of-variation">3. Covariance Matrix as
+a Summary of Variation</h2>
+<h4 id="motivation-measuring-spread-and-relationships">Motivation:
+Measuring Spread and Relationships</h4>
+<p>After mean centering, the centered data points are distributed around
+the origin. To understand the structure of this distribution, we need a
+single mathematical object that captures:</p>
+<ul>
+<li><p>How much each feature varies (spread along each axis),</p></li>
+<li><p>How features vary together (whether large values in one feature
+tend to occur with large or small values in another).</p></li>
+</ul>
+<p>Recall from probability that the variance of a random variable <span
+class="math inline">\(X\)</span> is <span
+class="math inline">\(\text{Var}(X) = E[X^2]\)</span> (when centered at
+zero). For data, this becomes <span
+class="math inline">\(\frac{1}{n}\sum_i x_i^2\)</span>, measuring spread
+along a single dimension.</p>
+<p>For centered data points <span class="math inline">\(x_1, \ldots,
+x_n\)</span>, the outer product <span class="math inline">\(x_i
+x_i^\top\)</span> creates a <span class="math inline">\(d \times
+d\)</span> matrix that captures all pairwise products of coordinates:
+<span class="math display">\[x_i x_i^\top = \begin{bmatrix} x_{i1} \\
+x_{i2} \\ \vdots \\ x_{id} \end{bmatrix} \begin{bmatrix} x_{i1} &amp;
+x_{i2} &amp; \cdots &amp; x_{id} \end{bmatrix} = \begin{bmatrix}
+x_{i1}^2 &amp; x_{i1}x_{i2} &amp; \cdots \\ x_{i2}x_{i1} &amp; x_{i2}^2
+&amp; \cdots \\ \vdots &amp; \vdots &amp; \ddots
+\end{bmatrix}.\]</span></p>
+<p>Averaging these matrices across all data points accumulates
+information about:</p>
+<ul>
+<li><p>Diagonal entries: <span class="math inline">\(\frac{1}{n}\sum_i
+x_{ij}^2\)</span> (variance of feature <span
+class="math inline">\(j\)</span>),</p></li>
+<li><p>Off-diagonal entries: <span
+class="math inline">\(\frac{1}{n}\sum_i x_{ij}x_{ik}\)</span>
+(covariance between features <span class="math inline">\(j\)</span> and
+<span class="math inline">\(k\)</span>).</p></li>
+</ul>
+<p>This is the natural generalization of univariate variance to the
+multivariate setting.</p>
+<h4 id="formal-definition">Formal Definition</h4>
+<p>The covariance matrix is defined as <span
+class="math display">\[\Sigma = \frac{1}{n}\sum_{i=1}^n x_i
+x_i^\top.\]</span></p>
+<p>Each entry <span class="math display">\[\Sigma_{jk} =
+\frac{1}{n}\sum_{i=1}^n x_{ij}x_{ik}\]</span> is the covariance between
+feature <span class="math inline">\(j\)</span> and feature <span
+class="math inline">\(k\)</span>.</p>
+<p>Thus, the covariance matrix compactly stores:</p>
+<ul>
+<li><p>variances of individual features (diagonal entries),</p></li>
+<li><p>pairwise relationships between features (off-diagonal
+entries).</p></li>
+</ul>
+<p>—</p>
+<h2 class="unnumbered" id="linear-summaries-of-data">4. Linear Summaries
+of Data</h2>
+<p>Choose a vector of weights <span class="math display">\[v \in
+\mathbb{R}^d, \quad \|v\| = 1.\]</span></p>
+<p>For each data point <span class="math inline">\(x_i\)</span>, define
+a one-dimensional summary: <span class="math display">\[z_i = x_i^\top
+v.\]</span></p>
+<p>This compresses each <span
+class="math inline">\(d\)</span>-dimensional data point into a single
+number.</p>
+<p>Different choices of <span class="math inline">\(v\)</span> preserve
+different aspects of the data.</p>
+<p>—</p>
+<h2 class="unnumbered" id="variance-as-information-preservation">5.
+Variance as Information Preservation</h2>
+<p>The variance of the summary values <span
+class="math inline">\(\{z_i\}\)</span> is <span
+class="math display">\[\operatorname{Var}(z) = \frac{1}{n}\sum_{i=1}^n
+z_i^2
+= v^\top \Sigma v.\]</span></p>
+<p>Interpretation:</p>
+<ul>
+<li><p>Large variance <span class="math inline">\(\Rightarrow\)</span>
+the summary distinguishes data points well.</p></li>
+<li><p>Zero variance <span class="math inline">\(\Rightarrow\)</span>
+all data points collapse to the same value (no information).</p></li>
+</ul>
+<p>Thus, variance measures how much of the <em>differences between data
+points</em> survive compression.</p>
+<p>—</p>
+<h2 class="unnumbered" id="the-core-pca-optimization-problem">6. The
+Core PCA Optimization Problem</h2>
+<p>To find the best one-dimensional representation, PCA solves: <span
+class="math display">\[\max_{\|v\|=1} \; v^\top \Sigma v.\]</span></p>
+<p>This chooses the linear combination of features whose values vary the
+most across the dataset.</p>
+<p>The solution is called the <em>first principal component</em> <span
+class="math inline">\(v_1\)</span>.</p>
+<p>—</p>
+<h2 class="unnumbered" id="reconstruction-viewpoint-key-insight">7.
+Reconstruction Viewpoint (Key Insight)</h2>
+<p>Given the summary <span class="math display">\[z_i = x_i^\top
+v,\]</span> the natural reconstruction of the original data point is
+<span class="math display">\[\hat{x}_i = z_i\, v.\]</span></p>
+<p>All reconstructed points lie in the one-dimensional subspace spanned
+by <span class="math inline">\(v\)</span>.</p>
+<p>The average reconstruction error is <span
+class="math display">\[\frac{1}{n}\sum_{i=1}^n \|x_i - \hat{x}_i\|^2
+= \frac{1}{n}\sum_{i=1}^n \|x_i - (x_i^\top v)v\|^2.\]</span></p>
+<p>A fundamental result is:</p>
+<blockquote>
+<p><em>The vector <span class="math inline">\(v\)</span> that maximizes
+variance also minimizes reconstruction error.</em></p>
+</blockquote>
+<p>Hence, PCA finds the best low-dimensional approximation of the data
+in the least-squares sense.</p>
+<p>—</p>
+<h2 class="unnumbered" id="example-housing-data">8. Example: Housing
+Data</h2>
+<p>Consider houses described by size and number of bedrooms
+(mean-centered):</p>
+<p><span class="math display">\[x_1 = (-5,-0.3),\quad
+x_2 = (5,0.7),\quad
+x_3 = (0,-0.3).\]</span></p>
+<ul>
+<li><p>Choosing <span class="math inline">\(v=(0,1)\)</span> (only
+bedrooms) produces low variance summaries.</p></li>
+<li><p>Choosing <span class="math inline">\(v=(1,0)\)</span> (only size)
+produces high variance summaries.</p></li>
+</ul>
+<p>Thus PCA automatically discovers that <em>house size</em> is the
+dominant pattern of variation.</p>
+<p>—</p>
+<h2 class="unnumbered" id="ultimate-benefit-of-pca">9. Ultimate Benefit
+of PCA</h2>
+<p>PCA provides:</p>
+<ul>
+<li><p>optimal linear compression of data,</p></li>
+<li><p>noise reduction by discarding low-variance directions,</p></li>
+<li><p>interpretable dominant patterns,</p></li>
+<li><p>better conditioning for downstream tasks (regression, clustering,
+density estimation).</p></li>
+</ul>
+<p>PCA does <em>not</em> discover meaning or causality. It guarantees
+only this:</p>
+<blockquote>
+<p><em>Among all linear low-dimensional representations, PCA loses the
+least information under squared error.</em></p>
+</blockquote>
+<p>—</p>
+<h2 class="unnumbered" id="one-sentence-summary">10. One-Sentence
+Summary</h2>
+<div class="center">
+
+</div>
+<p>Let us return to our same housing price example which is the
+following dataset with three features: <span
+class="math display">\[\begin{bmatrix}
+10 &amp; 2 &amp; 70 \\
+20 &amp; 3 &amp; 130 \\
+15 &amp; 2 &amp; 100
+\end{bmatrix}.\]</span> Here the first two columns are features (size in
+square feet and number of bedrooms) and the last column is the target
+variable (price in thousands of dollars). For PCA, we will only consider
+the feature columns: <span class="math display">\[\begin{bmatrix}
+10 &amp; 2 \\
+20 &amp; 3 \\
+15 &amp; 2
+\end{bmatrix}.\]</span> Why we are considering only feature columns?
+Because in real life we may not know the target variable for all data
+points, does it mean the dataset is useless? No, we can still use the
+feature columns to learn about the structure of the data. PCA helps us
+find a lower-dimensional representation of the data that captures the
+most important information. This is useful for visualization, noise
+reduction, and as a preprocessing step for other machine learning
+algorithms as it can help improve their performance by reducing
+overfitting and computational complexity. So in this example, we will
+reduce the two features (size and number of bedrooms) into a single
+feature that captures the most variance in the data. First step is to
+center the data by subtracting the mean of each feature from the
+corresponding feature values. This ensures that each feature has a mean
+of zero, which is important for PCA as it focuses on the directions of
+maximum variance rather than absolute values.</p>
+
+</div>
+<div class="page-content" id="page-13">
+<h2 id="data-centering">Data Centering</h2>
+<p>The mean of the first feature (size) is <span
+class="math inline">\((10 + 20 + 15) / 3 = 15\)</span>, and the mean of
+the second feature (number of bedrooms) is <span
+class="math inline">\((2 + 3 + 2) / 3 \approx 2.33\)</span>. Centering
+the data gives: <span class="math display">\[\begin{bmatrix}
+10 - 15 &amp; 2 - 2.33 \\
+20 - 15 &amp; 3 - 2.33 \\       
+15 - 15 &amp; 2 - 2.33
+\end{bmatrix}.\]</span> This results in the centered data matrix: <span
+class="math display">\[\begin{bmatrix}
+-5 &amp; -0.33 \\
+5 &amp; 0.67 \\
+0 &amp; -0.33
+\end{bmatrix}.\]</span> Now we can proceed to compute the covariance
+matrix of the centered data, because PCA relies on the covariance
+structure of the data to identify the principal components. This is due
+to the fact that principal components are directions in the feature
+space along which the data varies the most, and the covariance matrix
+captures this variance and the relationships between different features.
+Geometrically, the covariance matrix provides information about how the
+data is spread out in different directions, which is essential for
+determining the axes of maximum variance that PCA seeks to identify.
+Graphically see below:</p>
+<p>This graph shows the centered data points in a 2D space defined by
+size and number of bedrooms. The points are plotted relative to the
+origin, which represents the mean of the original data. The spread of
+these points indicates the variance in the data, which PCA will analyze
+to find the principal components.</p>
+<h2 id="covariance-matrix-calculation">Covariance Matrix
+Calculation</h2>
+<p>The covariance matrix <span class="math inline">\(C\)</span> is
+computed as: <span class="math display">\[C = \frac{1}{n} Z^\top
+Z,\]</span> where <span class="math inline">\(Z\)</span> is the centered
+data matrix and <span class="math inline">\(n\)</span> is the number of
+data points. In our case, <span class="math inline">\(n = 3\)</span>, so
+we have: <span class="math display">\[C = \frac{1}{3} \begin{bmatrix}
+-5 &amp; 5 &amp; 0 \\
+-0.33 &amp; 0.67 &amp; -0.33
+\end{bmatrix}
+\begin{bmatrix}
+-5 &amp; -0.33 \\
+5 &amp; 0.67 \\
+0 &amp; -0.33
+\end{bmatrix}.\]</span> Calculating this gives: <span
+class="math display">\[C = \frac{1}{3} \begin{bmatrix}
+(-5)(-5) + (5)(5) + (0)(0) &amp; (-5)(-0.33) + (5)(0.67) + (0)(-0.33) \\
+(-0.33)(-5) + (0.67)(5) + (-0.33)(0) &amp; (-0.33)(-0.33) + (0.67)(0.67)
++ (-0.33)(-0.33)
+\end{bmatrix}\]</span> <span class="math display">\[= \frac{1}{3}
+\begin{bmatrix}
+25 + 25 + 0 &amp; 1.65 + 3.35 + 0 \\
+1.65 + 3.35 + 0 &amp; 0.1089 + 0.4489 + 0.1089
+\end{bmatrix}\]</span> <span class="math display">\[= \frac{1}{3}
+\begin{bmatrix}
+50 &amp; 5 \\
+5 &amp; 0.6667
+\end{bmatrix} = \begin{bmatrix}16.6667 &amp; 1.6667 \\
+1.6667 &amp; 0.2222\end{bmatrix}.\]</span> Next step is to compute the
+eigenvalues and eigenvectors of the covariance matrix <span
+class="math inline">\(C\)</span>. The eigenvalues represent the amount
+of variance captured by each principal component, while the eigenvectors
+indicate the directions of these components in the feature space.</p>
+<h2 class="unnumbered"
+id="why-eigenvalues-and-eigenvectors-appear-in-pca">Why Eigenvalues and
+Eigenvectors Appear in PCA</h2>
+<p>At the heart of PCA lies the optimization problem <span
+class="math display">\[\max_{\|v\|=1} \; v^\top \Sigma v,\]</span> where
+<span class="math inline">\(\Sigma\)</span> is the covariance matrix of
+the mean-centered data.</p>
+<p>This problem asks for a linear combination of features whose values
+have maximum variance. Without the unit-length constraint <span
+class="math inline">\(\|v\|=1\)</span>, the objective would increase
+arbitrarily by scaling <span class="math inline">\(v\)</span>, so the
+constraint is essential.</p>
+<h4
+id="constrained-optimization-and-the-eigenvalue-equation">Constrained
+Optimization and the Eigenvalue Equation</h4>
+<p>To solve this constrained maximization, we introduce a Lagrange
+multiplier: <span class="math display">\[\mathcal{L}(v,\lambda)
+=
+v^\top \Sigma v
+-
+\lambda (v^\top v - 1).\]</span></p>
+<p>Taking derivatives with respect to <span
+class="math inline">\(v\)</span> and setting them to zero yields <span
+class="math display">\[\nabla_v \mathcal{L} = 2\Sigma v - 2\lambda v =
+0,\]</span> which simplifies to <span class="math display">\[\Sigma v =
+\lambda v.\]</span></p>
+<p>This equation is precisely the definition of an
+eigenvector–eigenvalue pair. Thus, eigenvectors are not assumed in PCA;
+they emerge inevitably as the stationary points of the variance
+maximization problem.</p>
+<h4 id="why-the-largest-eigenvalue-matters">Why the Largest Eigenvalue
+Matters</h4>
+<p>For any unit vector <span class="math inline">\(v\)</span>, <span
+class="math display">\[v^\top \Sigma v\]</span> equals the variance of
+the one-dimensional projection <span class="math inline">\(z = x^\top
+v\)</span>.</p>
+<p>When <span class="math inline">\(v\)</span> is an eigenvector of
+<span class="math inline">\(\Sigma\)</span> with eigenvalue <span
+class="math inline">\(\lambda\)</span>, this quantity becomes <span
+class="math display">\[v^\top \Sigma v = \lambda.\]</span></p>
+<p>Hence, the eigenvalue directly measures the variance captured by its
+corresponding eigenvector. Selecting the eigenvector with the largest
+eigenvalue therefore yields the direction of maximum variance, called
+the <em>first principal component</em>.</p>
+<h4 id="multiple-components-and-orthogonality">Multiple Components and
+Orthogonality</h4>
+<p>After the first component is chosen, PCA seeks additional components
+that:</p>
+<ul>
+<li><p>capture as much remaining variance as possible,</p></li>
+<li><p>do not duplicate information already captured.</p></li>
+</ul>
+<p>This leads naturally to the requirement that subsequent vectors be
+orthogonal to earlier ones. The eigenvectors of a symmetric matrix such
+as <span class="math inline">\(\Sigma\)</span> are automatically
+orthogonal, so they provide an ordered set of non-redundant
+directions.</p>
+<h4 id="interpretation-and-practical-handling">Interpretation and
+Practical Handling</h4>
+<ul>
+<li><p>Eigenvectors define <em>weight patterns</em> across
+features.</p></li>
+<li><p>Eigenvalues quantify how much variance each pattern
+explains.</p></li>
+<li><p>Keeping the top <span class="math inline">\(k\)</span>
+eigenvectors yields the best <span
+class="math inline">\(k\)</span>-dimensional linear approximation of the
+data.</p></li>
+</ul>
+<p>Eigenvectors should not be interpreted as causes or predictors. They
+represent optimal coordinates in which the structure of the data is most
+economically expressed.</p>
+<h4 id="key-takeaway">Key Takeaway</h4>
+<blockquote>
+<p>Eigenvectors and eigenvalues appear in PCA because maximizing
+variance under a normalization constraint mathematically forces the
+eigenvalue equation; they quantify optimal directions and the amount of
+variation captured along them.</p>
+</blockquote>
+<h2 id="eigenvalue-and-eigenvector-calculation">Eigenvalue and
+Eigenvector Calculation</h2>
+<p>To find the eigenvalues <span class="math inline">\(\lambda\)</span>
+of the covariance matrix <span class="math inline">\(C\)</span>, we
+solve the characteristic equation: <span class="math display">\[\det(C -
+\lambda I) = 0,\]</span> where <span class="math inline">\(I\)</span> is
+the identity matrix. Thus, we have: <span
+class="math display">\[\det\begin{bmatrix}16.6667 - \lambda &amp; 1.6667
+\\
+1.6667 &amp; 0.2222 - \lambda\end{bmatrix} = 0.\]</span> Calculating the
+determinant gives: <span class="math display">\[(16.6667 -
+\lambda)(0.2222 - \lambda) - (1.6667)(1.6667) = 0.\]</span> Expanding
+this, we get: <span class="math display">\[\lambda^2 - 16.8889\lambda +
+(16.6667 \cdot 0.2222 - 2.7778) = 0,\]</span> <span
+class="math display">\[\lambda^2 - 16.8889\lambda + 1.1111 = 0.\]</span>
+Using the quadratic formula: <span class="math display">\[\lambda =
+\frac{16.8889 \pm \sqrt{(16.8889)^2 - 4 \cdot 1 \cdot
+1.1111}}{2}.\]</span> Calculating the discriminant: <span
+class="math display">\[(16.8889)^2 - 4 \cdot 1.1111 \approx 285.1852 -
+4.4444 = 280.7408.\]</span> Thus, <span class="math display">\[\lambda
+\approx \frac{16.8889 \pm 16.7553}{2}.\]</span> This gives us two
+eigenvalues: <span class="math display">\[\lambda_1 \approx 16.8444,
+\quad \lambda_2 \approx 0.0444.\]</span> Next, we find the eigenvectors
+corresponding to each eigenvalue by solving the equation: <span
+class="math display">\[(C - \lambda I)v = 0.\]</span> For <span
+class="math inline">\(\lambda_1 \approx 16.8444\)</span>: <span
+class="math display">\[\begin{bmatrix}16.6667 - 16.8444 &amp; 1.6667 \\
+1.6667 &amp; 0.2222 - 16.8444\end{bmatrix}
+\begin{bmatrix}v_1 \\ v_2\end{bmatrix} = 0.\]</span> This simplifies to:
+<span class="math display">\[\begin{bmatrix}-0.1777 &amp; 1.6667 \\
+1.6667 &amp; -16.6222\end{bmatrix}
+\begin{bmatrix}v_1 \\ v_2\end{bmatrix} = 0.\]</span> Solving this system
+gives the eigenvector: <span class="math display">\[v_1 \approx
+\begin{bmatrix}0.9806 \\ 0.1960\end{bmatrix}.\]</span> For <span
+class="math inline">\(\lambda_2 \approx 0.0444\)</span>: <span
+class="math display">\[\begin{bmatrix}16.6667 - 0.0444 &amp; 1.6667 \\
+1.6667 &amp; 0.2222 - 0.0444\end{bmatrix}
+\begin{bmatrix}v_1 \\ v_2\end{bmatrix} = 0.\]</span> This simplifies to:
+<span class="math display">\[\begin{bmatrix}16.6223 &amp; 1.6667 \\
+1.6667 &amp; 0.1778\end{bmatrix}
+\begin{bmatrix}v_1 \\ v_2\end{bmatrix} = 0.\]</span> Solving this system
+gives the eigenvector: <span class="math display">\[v_2 \approx
+\begin{bmatrix}-0.1960 \\ 0.9806\end{bmatrix}.\]</span> The eigenvector
+corresponding to the largest eigenvalue <span
+class="math inline">\(\lambda_1\)</span> represents the direction of the
+first principal component, which captures the most variance in the data.
+In this case, the first principal component is approximately: <span
+class="math display">\[PC_1 \approx \begin{bmatrix}0.9806 \\
+0.1960\end{bmatrix}.\]</span> To reduce the dimensionality of the data
+from two features to one, we project the centered data onto the first
+principal component. This is done by taking the dot product of each
+centered data point with the first principal component vector.</p>
+
+</div>
+<div class="page-content" id="page-14">
+<h2 id="data-projection">Data Projection</h2>
+<p>The projection of a centered data point <span
+class="math inline">\(z_i\)</span> onto the first principal component
+<span class="math inline">\(PC_1\)</span> is given by: <span
+class="math display">\[p_i = z_i^\top PC_1.\]</span> Calculating the
+projections for each centered data point: <span
+class="math display">\[\begin{aligned}
+p_1 &amp;= \begin{bmatrix}-5 &amp; -0.33\end{bmatrix} \cdot
+\begin{bmatrix}0.9806 \\ 0.1960\end{bmatrix} \approx -5 \cdot 0.9806 +
+(-0.33) \cdot 0.1960 \approx -4.903 - 0.0647 \approx -4.9677, \\
+p_2 &amp;= \begin{bmatrix}5 &amp; 0.67\end{bmatrix} \cdot
+\begin{bmatrix}0.9806 \\ 0.1960\end{bmatrix} \approx 5 \cdot 0.9806 +
+0.67 \cdot 0.1960 \approx 4.903 + 0.1313 \approx 5.0343, \\
+p_3 &amp;= \begin{bmatrix}0 &amp; -0.33\end{bmatrix} \cdot
+\begin{bmatrix}0.9806 \\ 0.1960\end{bmatrix} \approx 0 \cdot 0.9806 +
+(-0.33) \cdot 0.1960 \approx -0.0647.
+\end{aligned}\]</span> Thus, the one-dimensional representation of the
+data after PCA is approximately: <span
+class="math display">\[\begin{bmatrix}-4.9677 \\
+5.0343 \\
+-0.0647\end{bmatrix}.\]</span> This reduced representation captures the
+most significant variance in the original two-dimensional feature space,
+allowing us to analyze and visualize the data more effectively while
+reducing complexity.</p>
+
+</div>
+
+
+<div class="footer">
+  <button onclick="previousPage()" id="prevBtn">← Previous</button>
+  <span style="font-weight: bold; color: #666;"><span id="currentPage">1</span> / <span id="totalPages">14</span></span>
+  <button onclick="nextPage()" id="nextBtn">Next →</button>
+</div>
+
+<script>
+let currentPage = 1;
+const totalPages = 14;
+
+function showPage(n) {
+  document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById('page-' + n);
+  if (page) page.classList.add('active');
+  
+  document.getElementById('currentPage').textContent = n;
+  document.getElementById('prevBtn').disabled = (n === 1);
+  document.getElementById('nextBtn').disabled = (n === totalPages);
+  
+  window.scrollTo(0, 0);
+  
+  if (window.MathJax) {
+    MathJax.typesetPromise().catch(err => console.log(err));
+  }
+}
+
+function nextPage() {
+  if (currentPage < totalPages) {
+    currentPage++;
+    showPage(currentPage);
+  }
+}
+
+function previousPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    showPage(currentPage);
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') nextPage();
+  if (e.key === 'ArrowLeft') previousPage();
+});
+
+showPage(1);
+</script>
+</body>
+</html>

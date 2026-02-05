@@ -20,7 +20,7 @@ let determineComputedTheme = () => {
 };
 
 // detect OS/browser preference
-const browserPref = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+const browserPref = 'light'; // Default to light mode instead of system preference
 
 // Set the theme on page load or when explicitly called
 let setTheme = (theme) => {
