@@ -1318,11 +1318,317 @@ only this:</p>
 least information under squared error.</em></p>
 </blockquote>
 <p>—</p>
-<h2 class="unnumbered" id="one-sentence-summary">10. One-Sentence
+<h2 class="unnumbered"
+id="pca-mathematical-formulation-deisenroth-et-al.">10. PCA:
+Mathematical Formulation (Deisenroth et al.)</h2>
+<h3 class="unnumbered" id="problem-setup-and-notation">10.1 Problem
+Setup and Notation</h3>
+<p>Let <span class="math inline">\(\mathcal{X} = \{x_1, \ldots,
+x_N\}\)</span> be a dataset where <span class="math inline">\(x_n \in
+\mathbb{R}^D\)</span>. We seek to find a lower-dimensional
+representation in <span class="math inline">\(\mathbb{R}^M\)</span>
+where <span class="math inline">\(M &lt; D\)</span>, while preserving as
+much information as possible.</p>
+<p>PCA projects data onto a lower-dimensional linear subspace. The key
+is to find an orthonormal basis <span class="math inline">\(\{b_1,
+\ldots, b_M\}\)</span> of this <span
+class="math inline">\(M\)</span>-dimensional subspace such that the
+projected data retains maximum variance.</p>
+<h4 id="projection-onto-a-subspace">Projection onto a Subspace</h4>
+<p>For a given orthonormal basis <span class="math inline">\(B = [b_1,
+\ldots, b_M]\)</span> where <span class="math inline">\(b_i \in
+\mathbb{R}^D\)</span> and <span class="math inline">\(b_i^\top b_j =
+\delta_{ij}\)</span>, the projection of a data point <span
+class="math inline">\(x_n\)</span> onto this subspace is: <span
+class="math display">\[\tilde{x}_n = \sum_{i=1}^M z_{ni} b_i = B
+z_n,\]</span> where <span class="math inline">\(z_n = [z_{n1}, \ldots,
+z_{nM}]^\top \in \mathbb{R}^M\)</span> are the coordinates (principal
+component scores) in the new basis, computed as <span
+class="math inline">\(z_{ni} = x_n^\top b_i\)</span>.</p>
+<h3 class="unnumbered" id="maximum-variance-formulation">10.2 Maximum
+Variance Formulation</h3>
+<h4 id="objective">Objective</h4>
+<p>PCA finds the orthonormal basis that maximizes the variance of the
+projected data. For mean-centered data (where <span
+class="math inline">\(\sum_{n=1}^N x_n = 0\)</span>), the variance of
+the projections onto a single direction <span
+class="math inline">\(b_1\)</span> is: <span class="math display">\[V_1
+= \frac{1}{N} \sum_{n=1}^N (x_n^\top b_1)^2 = \frac{1}{N} \sum_{n=1}^N
+b_1^\top x_n x_n^\top b_1 = b_1^\top S b_1,\]</span> where <span
+class="math inline">\(S = \frac{1}{N} \sum_{n=1}^N x_n x_n^\top\)</span>
+is the data covariance matrix.</p>
+<h4 id="constrained-optimization">Constrained Optimization</h4>
+<p>The first principal component is found by solving: <span
+class="math display">\[\max_{b_1} \; b_1^\top S b_1 \quad \text{subject
+to} \quad \|b_1\|^2 = 1.\]</span></p>
+<p>Using the method of Lagrange multipliers with Lagrangian <span
+class="math inline">\(\mathcal{L}(b_1, \lambda_1) = b_1^\top S b_1 -
+\lambda_1(b_1^\top b_1 - 1)\)</span>, we obtain: <span
+class="math display">\[\frac{\partial \mathcal{L}}{\partial b_1} = 2S
+b_1 - 2\lambda_1 b_1 = 0 \quad \Rightarrow \quad S b_1 = \lambda_1
+b_1.\]</span></p>
+<p>Thus, <span class="math inline">\(b_1\)</span> is an eigenvector of
+<span class="math inline">\(S\)</span> with eigenvalue <span
+class="math inline">\(\lambda_1\)</span>. The variance along this
+direction is: <span class="math display">\[V_1 = b_1^\top S b_1 =
+b_1^\top (\lambda_1 b_1) = \lambda_1 b_1^\top b_1 =
+\lambda_1.\]</span></p>
+<p>To maximize variance, we choose <span
+class="math inline">\(b_1\)</span> to be the eigenvector corresponding
+to the <em>largest eigenvalue</em> <span
+class="math inline">\(\lambda_1\)</span> of <span
+class="math inline">\(S\)</span>.</p>
+<h4 id="higher-principal-components">Higher Principal Components</h4>
+<p>For the <span class="math inline">\(m\)</span>-th principal
+component, we solve: <span class="math display">\[\max_{b_m} \; b_m^\top
+S b_m \quad \text{subject to} \quad \|b_m\|^2 = 1 \text{ and } b_m \perp
+b_i \text{ for } i = 1, \ldots, m-1.\]</span></p>
+<p>The solution is the eigenvector corresponding to the <span
+class="math inline">\(m\)</span>-th largest eigenvalue of <span
+class="math inline">\(S\)</span>.</p>
+<h3 class="unnumbered"
+id="minimum-reconstruction-error-formulation">10.3 Minimum
+Reconstruction Error Formulation</h3>
+<h4 id="alternative-characterization">Alternative Characterization</h4>
+<p>PCA can equivalently be formulated as minimizing the average squared
+reconstruction error. The reconstruction of <span
+class="math inline">\(x_n\)</span> from its projection is: <span
+class="math display">\[\tilde{x}_n = \sum_{i=1}^M (x_n^\top b_i) b_i =
+BB^\top x_n,\]</span> where <span class="math inline">\(B = [b_1,
+\ldots, b_M]\)</span>.</p>
+<p>The reconstruction error for the entire dataset is: <span
+class="math display">\[J = \frac{1}{N} \sum_{n=1}^N \|x_n -
+\tilde{x}_n\|^2 = \frac{1}{N} \sum_{n=1}^N \|x_n - BB^\top
+x_n\|^2.\]</span></p>
+<h4 id="equivalence-to-maximum-variance">Equivalence to Maximum
+Variance</h4>
+<p>Using the identity <span class="math inline">\(\|x_n\|^2 = \|BB^\top
+x_n\|^2 + \|(I - BB^\top)x_n\|^2\)</span> for orthonormal <span
+class="math inline">\(B\)</span>, we have: <span
+class="math display">\[J = \frac{1}{N} \sum_{n=1}^N \|x_n\|^2 -
+\frac{1}{N} \sum_{n=1}^N \|BB^\top x_n\|^2.\]</span></p>
+<p>Since the first term is constant, minimizing <span
+class="math inline">\(J\)</span> is equivalent to maximizing <span
+class="math inline">\(\frac{1}{N} \sum_{n=1}^N \|BB^\top
+x_n\|^2\)</span>, which is the variance of the projected data. Thus,
+<em>maximum variance and minimum reconstruction error are equivalent
+objectives</em>.</p>
+<h3 class="unnumbered" id="practical-algorithm">10.4 Practical
+Algorithm</h3>
+<ol>
+<li><p><strong>Center the data</strong>: Compute mean <span
+class="math inline">\(\mu = \frac{1}{N}\sum_{n=1}^N x_n\)</span> and set
+<span class="math inline">\(x_n \leftarrow x_n - \mu\)</span>.</p></li>
+<li><p><strong>Compute covariance matrix</strong>: <span
+class="math inline">\(S = \frac{1}{N} \sum_{n=1}^N x_n x_n^\top =
+\frac{1}{N} X^\top X\)</span>, where <span class="math inline">\(X =
+[x_1, \ldots, x_N]^\top \in \mathbb{R}^{N \times D}\)</span>.</p></li>
+<li><p><strong>Eigendecomposition</strong>: Compute eigenvectors and
+eigenvalues of <span class="math inline">\(S\)</span>: <span
+class="math inline">\(S = \sum_{i=1}^D \lambda_i b_i b_i^\top\)</span>
+where <span class="math inline">\(\lambda_1 \geq \lambda_2 \geq \cdots
+\geq \lambda_D\)</span>.</p></li>
+<li><p><strong>Select principal components</strong>: Choose the top
+<span class="math inline">\(M\)</span> eigenvectors <span
+class="math inline">\(B = [b_1, \ldots, b_M]\)</span>.</p></li>
+<li><p><strong>Project data</strong>: For each <span
+class="math inline">\(x_n\)</span>, compute <span
+class="math inline">\(z_n = B^\top x_n \in
+\mathbb{R}^M\)</span>.</p></li>
+</ol>
+<h4 id="explained-variance">Explained Variance</h4>
+<p>The proportion of variance captured by the first <span
+class="math inline">\(M\)</span> principal components is: <span
+class="math display">\[\frac{\sum_{i=1}^M \lambda_i}{\sum_{i=1}^D
+\lambda_i}.\]</span></p>
+<h3 class="unnumbered" id="key-properties">10.5 Key Properties</h3>
+<ul>
+<li><p><strong>Orthogonality</strong>: Principal components are mutually
+orthogonal: <span class="math inline">\(b_i^\top b_j =
+\delta_{ij}\)</span>.</p></li>
+<li><p><strong>Uncorrelated Projections</strong>: The coordinates <span
+class="math inline">\(z_{ni}\)</span> and <span
+class="math inline">\(z_{nj}\)</span> for <span class="math inline">\(i
+\neq j\)</span> are uncorrelated across the dataset.</p></li>
+<li><p><strong>Variance Ordering</strong>: Variance along principal
+components decreases: <span class="math inline">\(\lambda_1 \geq
+\lambda_2 \geq \cdots \geq \lambda_D \geq 0\)</span>.</p></li>
+<li><p><strong>Linear Transformation</strong>: PCA is a linear method
+that cannot capture nonlinear structure in data.</p></li>
+<li><p><strong>Scale Sensitivity</strong>: PCA is sensitive to feature
+scales; standardization is often applied before PCA.</p></li>
+</ul>
+<h3 class="unnumbered" id="computational-considerations">10.6
+Computational Considerations</h3>
+<p>For high-dimensional data where <span class="math inline">\(N &lt;
+D\)</span>, computing the <span class="math inline">\(D \times
+D\)</span> covariance matrix <span class="math inline">\(S\)</span> is
+expensive. Instead, we can use the <em>singular value decomposition
+(SVD)</em> of the centered data matrix <span class="math inline">\(X \in
+\mathbb{R}^{N \times D}\)</span>: <span class="math display">\[X = U
+\Sigma V^\top,\]</span> where <span class="math inline">\(U \in
+\mathbb{R}^{N \times N}\)</span>, <span class="math inline">\(\Sigma \in
+\mathbb{R}^{N \times D}\)</span>, <span class="math inline">\(V \in
+\mathbb{R}^{D \times D}\)</span> are the SVD factors.</p>
+<p>The relationship with PCA:</p>
+<ul>
+<li><p>The columns of <span class="math inline">\(V\)</span> are the
+principal components (eigenvectors of <span class="math inline">\(S =
+\frac{1}{N}X^\top X\)</span>).</p></li>
+<li><p>The eigenvalues of <span class="math inline">\(S\)</span> are
+<span class="math inline">\(\lambda_i = \frac{\sigma_i^2}{N}\)</span>,
+where <span class="math inline">\(\sigma_i\)</span> are the singular
+values.</p></li>
+<li><p>The projections are given by <span class="math inline">\(Z = XV =
+U\Sigma \in \mathbb{R}^{N \times D}\)</span>.</p></li>
+</ul>
+<p>This approach is numerically more stable and efficient, especially
+when <span class="math inline">\(N \ll D\)</span>.</p>
+<h3 class="unnumbered" id="geometric-interpretation-1">10.7 Geometric
+Interpretation</h3>
+<p>PCA identifies an orthogonal coordinate system aligned with the
+directions of maximum variance in the data cloud. Geometrically:</p>
+<ul>
+<li><p>The first principal component <span
+class="math inline">\(b_1\)</span> points in the direction of greatest
+spread.</p></li>
+<li><p>The second principal component <span
+class="math inline">\(b_2\)</span> is orthogonal to <span
+class="math inline">\(b_1\)</span> and points in the direction of
+second-greatest spread.</p></li>
+<li><p>Subsequent components follow similarly, forming a nested sequence
+of best-fit subspaces.</p></li>
+</ul>
+<p>The <span class="math inline">\(M\)</span>-dimensional subspace
+spanned by <span class="math inline">\(\{b_1, \ldots, b_M\}\)</span> is
+the best-fitting <span class="math inline">\(M\)</span>-dimensional
+linear subspace in the least-squares sense.</p>
+<p>—</p>
+<h2 class="unnumbered" id="one-sentence-summary">11. One-Sentence
 Summary</h2>
 <div class="center">
 
 </div>
+<h1 class="unnumbered" id="revision">Revision</h1>
+<h2 class="unnumbered" id="pca-in-full-matrix-and-component-form">PCA in
+Full Matrix and Component Form</h2>
+<h4 id="data-matrix.">Data matrix.</h4>
+<p>Let the dataset consist of <span class="math inline">\(N\)</span>
+centered samples in <span class="math inline">\(\mathbb{R}^d\)</span>:
+<span class="math display">\[X \in \mathbb{R}^{N \times d}, \qquad
+X =
+\begin{bmatrix}
+x_{11} &amp; x_{12} &amp; \cdots &amp; x_{1d} \\
+x_{21} &amp; x_{22} &amp; \cdots &amp; x_{2d} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+x_{N1} &amp; x_{N2} &amp; \cdots &amp; x_{Nd}
+\end{bmatrix}.\]</span> The <span class="math inline">\(n\)</span>-th
+data point is the row vector <span class="math display">\[x_n =
+\begin{bmatrix}
+x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nd}
+\end{bmatrix}
+\in \mathbb{R}^d.\]</span></p>
+<h4 id="covariance-matrix.">Covariance matrix.</h4>
+<p>The empirical covariance matrix is <span class="math display">\[S =
+\frac{1}{N} X^T X \in \mathbb{R}^{d \times d}.\]</span></p>
+<h4 id="principal-directions-decoder-matrix.">Principal directions
+(decoder matrix).</h4>
+<p>Let <span class="math display">\[B \in \mathbb{R}^{d \times m},
+\qquad
+B =
+\begin{bmatrix}
+b_{11} &amp; b_{12} &amp; \cdots &amp; b_{1m} \\
+b_{21} &amp; b_{22} &amp; \cdots &amp; b_{2m} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+b_{d1} &amp; b_{d2} &amp; \cdots &amp; b_{dm}
+\end{bmatrix}
+=
+\begin{bmatrix}
+b_1 &amp; b_2 &amp; \cdots &amp; b_m
+\end{bmatrix},\]</span> where the columns <span
+class="math inline">\(b_k \in \mathbb{R}^d\)</span> are orthonormal:
+<span class="math display">\[B^T B = I_m.\]</span></p>
+<p>Each direction satisfies the eigenvalue problem <span
+class="math display">\[S b_k = \lambda_k b_k.\]</span></p>
+<h4 id="encoding-principal-components.">Encoding (principal
+components).</h4>
+<p>The low-dimensional representation is <span class="math display">\[Z
+= X B \in \mathbb{R}^{N \times m},\]</span> <span
+class="math display">\[Z =
+\begin{bmatrix}
+z_{11} &amp; z_{12} &amp; \cdots &amp; z_{1m} \\
+z_{21} &amp; z_{22} &amp; \cdots &amp; z_{2m} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+z_{N1} &amp; z_{N2} &amp; \cdots &amp; z_{Nm}
+\end{bmatrix}.\]</span></p>
+<p>Componentwise, <span class="math display">\[z_{nk} = \sum_{j=1}^d
+x_{nj} \, b_{jk}
+= b_k^T x_n.\]</span></p>
+<p>In particular, the first principal component is <span
+class="math display">\[z_{n1}
+=
+b_{11}x_{n1}
++
+b_{21}x_{n2}
++\cdots+
+b_{d1}x_{nd}.\]</span> Thus the first principal component is a linear
+combination of <em>all</em> original features.</p>
+<h4 id="variance-of-the-first-component.">Variance of the first
+component.</h4>
+<p>Let <span class="math display">\[z_1 =
+\begin{bmatrix}
+z_{11} \\
+z_{21} \\
+\vdots \\
+z_{N1}
+\end{bmatrix}.\]</span> Then <span
+class="math display">\[\mathrm{Var}(z_1)
+=
+\frac{1}{N} \sum_{n=1}^N z_{n1}^2
+=
+\frac{1}{N} \sum_{n=1}^N (b_1^T x_n)^2
+=
+b_1^T S b_1.\]</span> PCA chooses <span
+class="math inline">\(b_1\)</span> to maximize this variance: <span
+class="math display">\[\max_{\|b_1\|=1} \; b_1^T S b_1.\]</span></p>
+<h4 id="reconstruction.">Reconstruction.</h4>
+<p>The reconstructed data is <span class="math display">\[\hat{X} = Z
+B^T = X B B^T.\]</span></p>
+<p>The matrix <span class="math display">\[P = B B^T \in \mathbb{R}^{d
+\times d}\]</span> has components <span class="math display">\[P_{ij} =
+\sum_{k=1}^m b_{ik} b_{jk}.\]</span></p>
+<p>Thus reconstruction componentwise is <span
+class="math display">\[\hat{x}_{ni}
+=
+\sum_{j=1}^d x_{nj} P_{ji}
+=
+\sum_{j=1}^d x_{nj}
+\left(
+\sum_{k=1}^m b_{jk} b_{ik}
+\right).\]</span></p>
+<h4 id="why-bbt-neq-i_d.">Why <span class="math inline">\(BB^T \neq
+I_d\)</span>.</h4>
+<p>If <span class="math inline">\(m &lt; d\)</span>, then <span
+class="math display">\[B^T B = I_m,
+\qquad
+BB^T \neq I_d.\]</span> Instead, <span class="math display">\[(BB^T)^2 =
+BB^T,\]</span> so <span class="math inline">\(BB^T\)</span> is a
+projection matrix onto the <span
+class="math inline">\(m\)</span>-dimensional subspace spanned by <span
+class="math inline">\(\{b_1,\dots,b_m\}\)</span>.</p>
+<p>Therefore <span class="math display">\[\hat{X} = XBB^T \neq
+X\]</span> unless <span class="math inline">\(m=d\)</span>, in which
+case <span class="math inline">\(B\)</span> is square orthogonal and
+<span class="math display">\[BB^T = I_d.\]</span></p>
+<h4 id="summary.">Summary.</h4>
+<p>PCA performs the transformation <span class="math display">\[X_{N
+\times d}
+\;\longrightarrow\;
+Z = X B \; (N \times m),\]</span> where each new coordinate is <span
+class="math display">\[z_{nk} = b_k^T x_n,\]</span> and reconstruction
+is the orthogonal projection <span class="math display">\[\hat{X} =
+XBB^T.\]</span></p>
+<h1 id="pca-example-and-intuition">PCA: Example and Intuition</h1>
 <p>Let us return to our same housing price example which is the
 following dataset with three features: <span
 class="math display">\[\begin{bmatrix}
@@ -1568,6 +1874,31 @@ class="math display">\[\begin{bmatrix}-4.9677 \\
 -0.0647\end{bmatrix}.\]</span> This reduced representation captures the
 most significant variance in the original two-dimensional feature space,
 allowing us to analyze and visualize the data more effectively while
-reducing complexity.</p>
+reducing complexity. Let us find the variance of this one-dimensional
+representation: <span class="math display">\[\mathrm{Var}(p) =
+\frac{1}{3} \sum_{i=1}^3 p_i^2 \approx \frac{1}{3}((-4.9677)^2 +
+(5.0343)^2 + (-0.0647)^2) \approx \frac{1}{3}(24.678 + 25.344 + 0.0042)
+\approx 16.674.\]</span> This variance is close to the largest
+eigenvalue <span class="math inline">\(\lambda_1 \approx
+16.8444\)</span>, confirming that the first principal component captures
+the majority of the variance in the data. Second principal component
+captures the remaining variance, which is much smaller in this case,
+indicating that the data is primarily spread along the direction of the
+first principal component. See calculation below: <span
+class="math display">\[\mathrm{Var}(p_2) = \frac{1}{3} \sum_{i=1}^3
+p_{2i}^2 \approx \frac{1}{3}((-0.1960)^2 + (0.9806)^2 + (0.1960)^2)
+\approx \frac{1}{3}(0.0384 + 0.9616 + 0.0384) \approx 0.044\]</span>
+This variance is close to the second eigenvalue <span
+class="math inline">\(\lambda_2 \approx 0.0444\)</span>, confirming that
+the second principal component captures the remaining variance in the
+data. The first principal component is the most informative direction in
+the feature space, while the second principal component captures a much
+smaller amount of variance, indicating that it may be less important for
+understanding the structure of the data. This example illustrates how
+PCA identifies the directions of maximum variance in the data and allows
+us to reduce the dimensionality while retaining as much information as
+possible. By projecting the data onto the first principal component, we
+can analyze the most significant patterns in the data with a simpler
+representation.</p>
 </body>
 </html>
