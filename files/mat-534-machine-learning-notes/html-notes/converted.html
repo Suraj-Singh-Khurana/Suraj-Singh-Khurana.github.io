@@ -2126,5 +2126,752 @@ points, where the weights are given by the responsibilities <span
 class="math inline">\(r_{nk}\)</span>. The more a data point belongs to
 component <span class="math inline">\(k\)</span>, the more it influences
 the new mean of that component.</p>
+<h1 id="support-vector-machines-svm">Support Vector Machines (SVM)</h1>
+<p>The fourth pillar in Machine Learning is classification, and one of
+the most powerful algorithms for classification is the Support Vector
+Machine (SVM). SVM is very geometrically intuitive and is based on the
+idea of finding a hyperplane that best separates the classes in the
+feature space. Recall that equation of a straight line in two dimensions
+is given by: <span class="math display">\[y = mx + b,\]</span> but this
+notation is not very convenient for SVM as we will work in higher
+dimensions. Instead, we can rewrite this equation in a more general form
+as: <span class="math display">\[w^T x + b = 0,\]</span> where <span
+class="math display">\[w = \begin{bmatrix} w_1 \\ w_2 \\ \vdots \\ w_D
+\end{bmatrix}\]</span> is a weight vector that is perpendicular to the
+hyperplane, <span class="math display">\[x = \begin{bmatrix} x_1 \\ x_2
+\\ \vdots \\ x_D \end{bmatrix}\]</span> is a point in the feature space
+of dimension <span class="math inline">\(D\)</span>, and <span
+class="math inline">\(b\)</span> is a bias term that shifts the
+hyperplane away from the origin. Now let us recall how to find distance
+of a point from a line in two dimensions. The distance <span
+class="math inline">\(d\)</span> from a point <span
+class="math inline">\((x_0, y_0)\)</span> to the line <span
+class="math inline">\(y = mx + b\)</span> can be calculated using the
+formula: <span class="math display">\[d = \frac{|mx_0 - y_0 +
+b|}{\sqrt{m^2 + 1}}.\]</span> This one is not going to work well in
+higher dimensions, so we need to derive a more general formula for the
+distance from a point to a hyperplane in <span
+class="math inline">\(D\)</span>-dimensional space. In higher
+dimensions, the distance from a point <span
+class="math inline">\(x_0\)</span> to the hyperplane defined by <span
+class="math inline">\(w^T x + b = 0\)</span> can be calculated using the
+formula: <span class="math display">\[d = \frac{|w^T x_0 +
+b|}{\|w\|},\]</span> where <span class="math inline">\(\|w\|\)</span> is
+the Euclidean norm of the weight vector <span
+class="math inline">\(w\)</span>. This formula gives us the distance
+from the point <span class="math inline">\(x_0\)</span> to the
+hyperplane, which is crucial for SVM as it aims to maximize this
+distance for the closest points in the training data, known as support
+vectors. By maximizing the margin (the distance from the support vectors
+to the hyperplane), SVM seeks to find the optimal hyperplane that best
+separates the classes in the feature space, leading to better
+generalization performance on unseen data. As you can see that there are
+two goals in “maximize this distance for the closest points in the
+training data". So the first goal is to find the closest point to the
+hyperplane, which is known as the support vector. The second goal is to
+maximize the distance from this support vector to the hyperplane, which
+is equivalent to maximizing the margin. The margin is defined as the
+distance between the support vector and the hyperplane, and it
+represents how well the classes are separated. A larger margin indicates
+better separation and typically leads to better generalization
+performance on unseen data. Therefore, SVM focuses on finding the
+hyperplane that maximizes this margin, ensuring that the closest points
+(support vectors) are as far away from the hyperplane as possible, which
+helps in achieving better classification results. Mathematically this
+can be formulated as an optimization problem: <span
+class="math display">\[\begin{aligned}
+&amp;\text{maximize} \quad r \\
+&amp;\text{subject to} \quad y_n (w^T x_n + b) \geq r, \quad \forall n
+\end{aligned}\]</span> where <span class="math inline">\(r\)</span> is
+the margin, <span class="math inline">\(y_n\)</span> is the class label
+of the <span class="math inline">\(n\)</span>-th training point, <span
+class="math inline">\(x_n\)</span> is the feature vector of the <span
+class="math inline">\(n\)</span>-th training point, and <span
+class="math inline">\(r\)</span> is a positive constant that defines the
+margin. This optimization problem can be solved using techniques from
+convex optimization, and it leads to the formulation of the SVM
+algorithm. The solution to this problem gives us the optimal weight
+vector <span class="math inline">\(w\)</span> and bias term <span
+class="math inline">\(b\)</span> that define the hyperplane with the
+maximum margin, allowing us to classify new data points based on which
+side of the hyperplane they fall on. Mathematically, the product will
+always be positive for points that are correctly classified, and the
+margin <span class="math inline">\(r\)</span> is the minimum value of
+this product across all training points. Why is this? Because for labels
+take values in <span class="math inline">\(\{-1, 1\}\)</span>, the
+product <span class="math inline">\(y_n (w^T x_n + b)\)</span> will be
+positive if the point is correctly classified (i.e., if <span
+class="math inline">\(y_n = 1\)</span> and <span
+class="math inline">\(w^T x_n + b &gt; 0\)</span> or if <span
+class="math inline">\(y_n = -1\)</span> and <span
+class="math inline">\(w^T x_n + b &lt; 0\)</span>). The margin <span
+class="math inline">\(r\)</span> is defined as the minimum value of this
+across all training points, which means that it represents the distance
+from the closest point to the hyperplane. By maximizing this margin
+<span class="math inline">\(r\)</span>, SVM aims to find the best
+possible separation between the classes, which is a key factor in
+achieving good generalization performance on unseen data. This problem
+can also be formulated as minimizing the maximum of the distances from
+the support vectors to the hyperplane, which is equivalent to maximizing
+the margin. So the margin is the distance of the closest point to the
+hyperplane <span class="math inline">\(w^T x + b = 0\)</span>, and is
+given by the formula: <span class="math display">\[\text{Margin} = \min
+\left\{ \frac{|w^T x_n + b|}{\|w\|} \right\} \quad \text{for all }
+n.\]</span> But this is involving modulus, which is not convenient for
+optimization. Instead, we can rewrite the signed distance as: <span
+class="math display">\[\text{Margin} = \min \left\{ \frac{y_n (w^T x_n +
+b)}{\|w\|} \right\} \quad \text{for all } n.\]</span> Now let us say
+that the quantity <span class="math inline">\(y_n (w^T x_n + b)\)</span>
+is greater than or equal to r for all <span
+class="math inline">\(n\)</span>, which means that the margin is at
+least <span class="math display">\[\frac{r}{w}\]</span> for all <span
+class="math inline">\(n\)</span>. This is equivalent to saying that the
+margin is at least <span class="math inline">\(\frac{r}{\|w\|}\)</span>
+for all <span class="math inline">\(n\)</span>. Therefore, maximizing
+the margin is equivalent to maximizing <span
+class="math inline">\(\frac{r}{\|w\|}\)</span>, which is equivalent to
+minimizing <span class="math inline">\(\|w\|\)</span> subject to the
+constraint that <span class="math inline">\(y_n (w^T x_n + b) \geq
+r\)</span> for all <span class="math inline">\(n\)</span>. This leads us
+to the following optimization problem: <span
+class="math display">\[\begin{aligned}
+&amp;\text{minimize} \quad \|w\| \\
+&amp;\text{subject to} \quad y_n (w^T x_n + b) \geq r, \quad \forall n
+\end{aligned}\]</span> This is also written as max min combined
+optimization problem as follows: <span class="math display">\[\max_{w,
+b} \min_n \frac{y_n (w^T x_n + b)}{\|w\|}.\]</span> Now note that if we
+scale the parameters <span class="math inline">\(w\)</span> and <span
+class="math inline">\(b\)</span> by a positive constant <span
+class="math inline">\(\alpha\)</span>, the decision boundary defined by
+<span class="math inline">\(w^T x + b = 0\)</span> remains unchanged.
+This is because the equation can be rewritten as: <span
+class="math display">\[\alpha w^T x + \alpha b = 0 \implies w^T x + b =
+0.\]</span> This invariance property is crucial for the optimization
+problem, as it allows us to focus on finding the optimal <span
+class="math inline">\(w\)</span> and <span
+class="math inline">\(b\)</span> without worrying about their scale.
+Also if you substitute <span class="math display">\[w&#39; = \alpha
+w\]</span> and <span class="math display">\[b&#39; = \alpha b\]</span>
+into the margin expression, you will see that the margin is also
+invariant to this scaling: <span class="math display">\[\begin{aligned}
+\text{Margin}
+&amp;= \min_{n}\frac{y_n (w&#39;^T x_n + b&#39;)}{\|w&#39;\|}
+= \min_{n}\frac{y_n (\alpha w^T x_n + \alpha b)}{\|\alpha w\|} \\[4pt]
+&amp;= \min_{n}\frac{\alpha\, y_n (w^T x_n + b)}{\alpha \|w\|}
+= \min_{n}\frac{y_n (w^T x_n + b)}{\|w\|}.
+\end{aligned}\]</span> So we choose such an <span
+class="math inline">\(\alpha\)</span> that the margin becomes <span
+class="math display">\[\frac{1}{\|w&#39;\|}\]</span>. This is equivalent
+to setting <span class="math inline">\(r = 1\)</span> in the
+optimization problem, which simplifies it to: <span
+class="math display">\[\begin{aligned}
+&amp;\text{minimize} \quad \|w\| \\
+&amp;\text{subject to} \quad y_n (w^T x_n + b) \geq 1, \quad \forall n
+\end{aligned}\]</span> The above formulation of SVM is also called the
+hard-margin SVM, which assumes that the data is linearly separable. This
+is rewritten with coefficient <span class="math display">\[1/2\]</span>
+as follows: <span class="math display">\[\begin{aligned}
+&amp;\text{minimize} \quad \frac{1}{2}\|w\|^2 \\
+&amp;\text{subject to} \quad y_n (w^T x_n + b) \geq 1, \quad \forall n
+\end{aligned}\]</span> But before applying Lagrangian multipliers, let
+us realize that in real world data is often not linearly separable,
+which means that we need to allow for some misclassifications. This
+leads us to the soft-margin SVM formulation, which introduces slack
+variables <span class="math inline">\(\xi_n\)</span> to account for
+these misclassifications: <span class="math display">\[\begin{aligned}
+&amp;\text{minimize} \quad \frac{1}{2}\|w\|^2 + C \sum_{n} \xi_n \\
+&amp;\text{subject to} \quad y_n (w^T x_n + b) \geq 1 - \xi_n, \quad
+\forall n \\
+&amp;\xi_n \geq 0, \quad \forall n
+\end{aligned}\]</span> where <span class="math inline">\(C\)</span> is a
+regularization parameter that controls the trade-off between maximizing
+the margin and minimizing the classification error. The slack variables
+<span class="math inline">\(\xi_n\)</span> allow for some
+misclassifications, and the optimization problem seeks to find the best
+balance between having a large margin and allowing for some errors in
+classification. This formulation of SVM is more flexible and can handle
+cases where the data is not perfectly linearly separable, making it more
+applicable to real-world datasets. How these slack variables work is
+that if a data point is correctly classified and lies outside the
+margin, then <span class="math inline">\(\xi_n = 0\)</span>. If a data
+point is correctly classified but lies within the margin, then <span
+class="math inline">\(0 &lt; \xi_n &lt; 1\)</span>. If a data point is
+misclassified, then <span class="math inline">\(\xi_n &gt; 1\)</span>.
+The optimization problem seeks to minimize the sum of the slack
+variables, which encourages the model to find a hyperplane that not only
+maximizes the margin but also minimizes the number of
+misclassifications. By adjusting the regularization parameter <span
+class="math inline">\(C\)</span>, we can control how much we want to
+penalize misclassifications versus maximizing the margin, allowing us to
+find an optimal balance for our specific dataset. Note that if slack
+variable is in between 0 and 1, it should have been support vector,
+because it is correctly classified, so why it is not support vector? The
+answer is that it can be a support vector, but it is not necessarily a
+support vector. A support vector is defined as a data point that lies on
+the margin or within the margin, which means that it can have a slack
+variable <span class="math inline">\(\xi_n\)</span> that is greater than
+zero but less than or equal to one. However, not all data points with
+<span class="math inline">\(0 &lt; \xi_n &lt; 1\)</span> are necessarily
+support vectors, as they may not lie on the margin or within the margin.
+The key point is that the optimization problem seeks to find the
+hyperplane that maximizes the margin while allowing for some
+misclassifications, and the slack variables help to achieve this
+balance. Therefore, while some data points with <span
+class="math inline">\(0 &lt; \xi_n &lt; 1\)</span> may be support
+vectors, it is not guaranteed that all such data points will be support
+vectors, as it depends on their position relative to the margin and the
+hyperplane. The support vectors are the critical elements of the SVM
+model, as they are the data points that define the position and
+orientation of the hyperplane. The optimization problem focuses on
+maximizing the margin defined by these support vectors, which is why
+they play a crucial role in determining the decision boundary of the
+SVM. In summary, while some data points with <span
+class="math inline">\(0 &lt; \xi_n &lt; 1\)</span> may be support
+vectors, it is not guaranteed that all such data points will be support
+vectors, as it depends on their position relative to the margin and the
+hyperplane. The optimization problem seeks to find the best balance
+between maximizing the margin and minimizing misclassifications, and the
+slack variables help to achieve this balance by allowing for some
+flexibility in how the model handles data points that are not perfectly
+classified.</p>
+<p>Before solving the optimization problem using Lagrangian multipliers,
+let us also note that SVM can be extended to handle non-linear decision
+boundaries by using kernel functions. The kernel trick allows us to
+implicitly map the input data into a higher-dimensional feature space
+where a linear separation is possible, without explicitly computing the
+coordinates of the data in that space. This is achieved by replacing the
+dot product in the optimization problem with a kernel function <span
+class="math inline">\(K(x_i, x_j)\)</span>, which computes the
+similarity between data points in the original feature space. Common
+kernel functions include the polynomial kernel, radial basis function
+(RBF) kernel, and sigmoid kernel. By using kernels, SVM can effectively
+capture complex relationships in the data and find non-linear decision
+boundaries, making it a powerful tool for classification tasks in
+various domains. But where does the dot product come from in the
+optimization problem? For this let us give detailed derivation of the
+dual form of the SVM optimization problem using Lagrangian multipliers.
+The primal optimization problem for the hard-margin SVM is given by:
+<span class="math display">\[\begin{aligned}
+&amp;\text{minimize} \quad \frac{1}{2}\|w\|^2 \\
+&amp;\text{subject to} \quad y_n (w^T x_n + b) \geq 1, \quad \forall n
+\end{aligned}\]</span> To derive the dual form of this optimization
+problem, we introduce Lagrange multipliers <span
+class="math inline">\(\alpha_n \geq 0\)</span> for each constraint. The
+Lagrangian function is defined as: <span class="math display">\[L(w, b,
+\alpha) = \frac{1}{2}\|w\|^2 - \sum_{n=1}^N \alpha_n [y_n (w^T x_n + b)
+- 1].\]</span> Taking the partial derivatives of the Lagrangian with
+respect to <span class="math inline">\(w\)</span> and <span
+class="math inline">\(b\)</span> and setting them to zero gives us the
+following conditions: <span class="math display">\[\frac{\partial
+L}{\partial w} = w - \sum_{n=1}^N \alpha_n y_n x_n = 0 \implies w =
+\sum_{n=1}^N \alpha_n y_n x_n,\]</span> <span
+class="math display">\[\frac{\partial L}{\partial b} = -\sum_{n=1}^N
+\alpha_n y_n = 0 \implies \sum_{n=1}^N \alpha_n y_n = 0.\]</span>
+Substituting and full derivation below: <span
+class="math display">\[\begin{aligned}
+L(w, b, \alpha)
+&amp;= \frac{1}{2}\|w\|^2 - \sum_{n=1}^N \alpha_n [y_n (w^T x_n + b) -
+1] \\
+&amp;= \frac{1}{2} \left\| \sum_{n=1}^N \alpha_n y_n x_n \right\|^2 -
+\sum_{n=1}^N \alpha_n [y_n ((\sum_{m=1}^N \alpha_m y_m x_m)^T x_n + b) -
+1] \\
+&amp;= \frac{1}{2} \sum_{n=1}^N \sum_{m=1}^N \alpha_n \alpha_m y_n y_m
+x_n^T x_m - \sum_{n=1}^N \alpha_n [y_n ((\sum_{m=1}^N \alpha_m y_m
+x_m)^T x_n + b) - 1] \\
+&amp;= \frac{1}{2} \sum_{n=1}^N \sum_{m=1}^N \alpha_n \alpha_m y_n y_m
+x_n^T x_m - \sum_{n=1}^N \alpha_n [y_n ((\sum_{m=1}^N \alpha_m y_m
+x_m)^T x_n) + y_n b - 1]
+\end{aligned}\]</span> Now, since <span
+class="math inline">\(\sum_{n=1}^N \alpha_n y_n = 0\)</span>, the term
+involving <span class="math inline">\(b\)</span> will vanish, and we are
+left with: <span class="math display">\[\begin{aligned}
+&amp;\text{maximize} \quad \sum_{n=1}^N \alpha_n - \frac{1}{2}
+\sum_{n=1}^N \sum_{m=1}^N \alpha_n \alpha_m y_n y_m x_n^T x_m \\
+&amp;\text{subject to 2 conditions} \quad \alpha_n \geq 0, \quad \forall
+n, \quad \text{and} \\
+&amp; \sum_{n=1}^N \alpha_n y_n = 0.
+\end{aligned}\]</span> Why suddenly the minimize became maximize? This
+is because we are now maximizing the dual function, which is derived
+from the Lagrangian. The dual function is defined as: <span
+class="math display">\[g(\alpha) = \inf_{w, b} L(w, b, \alpha).\]</span>
+Since we are maximizing the dual function with respect to <span
+class="math inline">\(\alpha\)</span>, the optimization problem is now a
+maximization problem. Now we use the results of famous
+Karush-Kuhn-Tucker (KKT) conditions to find the optimal solution for
+<span class="math inline">\(\alpha\)</span>. The KKT conditions state
+that at the optimal solution, the following four must hold: 1. Primal
+feasibility: <span class="math inline">\(y_n (w^T x_n + b) \geq
+1\)</span> for all <span class="math inline">\(n\)</span>. 2. Dual
+feasibility: <span class="math inline">\(\alpha_n \geq 0\)</span> for
+all <span class="math inline">\(n\)</span>. 3. Complementary slackness:
+<span class="math inline">\(\alpha_n [y_n (w^T x_n + b) - 1] =
+0\)</span> for all <span class="math inline">\(n\)</span>. 4.
+Stationarity: <span class="math inline">\(\nabla_w L = 0\)</span> and
+<span class="math inline">\(\nabla_b L = 0\)</span>.</p>
+<p>Let us describe what each of these conditions means in the context of
+SVM: 1. Primal feasibility ensures that the constraints of the original
+optimization problem are satisfied, meaning that all data points are
+correctly classified with a margin of at least 1. 2. Dual feasibility
+ensures that the Lagrange multipliers are non-negative, which is a
+requirement for the optimization problem. 3. Complementary slackness
+means that for each data point, either the Lagrange multiplier is zero
+(indicating that the constraint is not active) or the constraint is
+satisfied with equality (indicating that the point lies on the margin).
+4. Stationarity ensures that the gradients of the Lagrangian with
+respect to the primal variables are zero, which is necessary for
+optimality. By applying these KKT conditions, we can find the optimal
+values of <span class="math inline">\(\alpha\)</span> that maximize the
+dual function, which in turn gives us the optimal weight vector <span
+class="math inline">\(w\)</span> and bias term <span
+class="math inline">\(b\)</span> for the SVM model. The support vectors
+correspond to the data points for which <span
+class="math inline">\(\alpha_n &gt; 0\)</span>, as these are the points
+that lie on the margin and contribute to defining the decision boundary
+of the SVM. The final decision function for classifying new data points
+can be expressed in terms of the support vectors and their corresponding
+Lagrange multipliers, allowing us to make predictions based on the
+learned model. Below is full worked out example of SVM with a small
+dataset. Consider the following dataset with two classes: <span
+class="math display">\[\text{Class 1: } (1, 2), (2, 3), (3, 1)\]</span>
+<span class="math display">\[\text{Class 2: } (5, 6), (6, 7), (7,
+5)\]</span> We want to find the optimal hyperplane that separates these
+two classes using SVM. We can start by plotting the data points to
+visualize the separation. The points from Class 1 are clustered around
+the lower left corner, while the points from Class 2 are clustered
+around the upper right corner. We can see that there is a clear
+separation between the two classes, and we can find a hyperplane that
+separates them. Next, we can set up the optimization problem for SVM. We
+will use the hard-margin SVM formulation, which assumes that the data is
+linearly separable. The optimization problem is: <span
+class="math display">\[\begin{aligned}
+&amp;\text{minimize} \quad \frac{1}{2}\|w\|^2 \\
+&amp;\text{subject to} \quad y_n (w^T x_n + b) \geq 1, \quad \forall n
+\end{aligned}\]</span> where <span class="math inline">\(y_n\)</span> is
+the class label for each data point (1 for Class 1 and -1 for Class 2),
+<span class="math inline">\(x_n\)</span> is the feature vector for each
+data point, and <span class="math inline">\(w\)</span> and <span
+class="math inline">\(b\)</span> are the parameters of the hyperplane we
+want to find. We can assign the class labels as follows: <span
+class="math display">\[\text{Class 1: } (1, 2) \rightarrow 1, (2, 3)
+\rightarrow 1, (3, 1) \rightarrow 1\]</span> <span
+class="math display">\[\text{Class 2: } (5, 6) \rightarrow -1, (6, 7)
+\rightarrow -1, (7, 5) \rightarrow -1\]</span> Now we can set up the
+Lagrangian for this optimization problem and derive the dual form using
+Lagrange multipliers, as we discussed earlier. After solving the dual
+optimization problem, we can find the optimal values of <span
+class="math inline">\(\alpha\)</span>, which will allow us to compute
+the optimal weight vector <span class="math inline">\(w\)</span> and
+bias term <span class="math inline">\(b\)</span>. The support vectors
+will be the data points for which <span class="math inline">\(\alpha_n
+&gt; 0\)</span>, and these points will define the decision boundary of
+the SVM. Finally, we can use the learned model to classify new data
+points based on which side of the hyperplane they fall on, allowing us
+to make predictions for unseen data. This example illustrates how SVM
+can be applied to a simple dataset to find the optimal hyperplane that
+separates two classes, and how the optimization problem is formulated
+and solved using Lagrangian multipliers and the KKT conditions. In
+practice, we would typically use a software library such as scikit-learn
+in Python to implement SVM, which provides efficient algorithms for
+solving the optimization problem and allows us to easily apply SVM to
+larger and more complex datasets. Additionally, we can experiment with
+different kernel functions to capture non-linear relationships in the
+data, further enhancing the flexibility and performance of the SVM
+model. But let us do by hand calculation for this small dataset to find
+the optimal hyperplane. Below are all the calculations for this example
+with every single detail, including the values of the Lagrange
+multipliers, the weight vector, and the bias term. We will also identify
+the support vectors and compute the decision function for classifying
+new data points based on the learned model. This detailed example will
+provide a comprehensive understanding of how SVM works in practice and
+how the optimization problem is solved to find the optimal hyperplane
+for classification. Step 1 details are as follows: 1. Assign class
+labels: <span class="math display">\[\text{Class 1: } (1, 2) \rightarrow
+1, (2, 3) \rightarrow 1, (3, 1) \rightarrow 1\]</span> <span
+class="math display">\[\text{Class 2: } (5, 6) \rightarrow -1, (6, 7)
+\rightarrow -1, (7, 5) \rightarrow -1\]</span> 2. Set up the
+optimization problem: <span class="math display">\[\begin{aligned}
+&amp;\text{minimize} \quad \frac{1}{2}\|w\|^2 \\
+&amp;\text{subject to} \quad y_n (w^T x_n + b) \geq 1, \quad \forall n
+\end{aligned}\]</span> 3. Introduce Lagrange multipliers <span
+class="math inline">\(\alpha_n\)</span> for each constraint and set up
+the Lagrangian: <span class="math display">\[L(w, b, \alpha) =
+\frac{1}{2}\|w\|^2 - \sum_{n=1}^N \alpha_n [y_n (w^T x_n + b) -
+1].\]</span> 4. Take the partial derivatives of the Lagrangian with
+respect to <span class="math inline">\(w\)</span> and <span
+class="math inline">\(b\)</span> and set them to zero to find the
+conditions for optimality: <span class="math display">\[\frac{\partial
+L}{\partial w} = w - \sum_{n=1}^N \alpha_n y_n x_n = 0 \implies w =
+\sum_{n=1}^N \alpha_n y_n x_n,\]</span> <span
+class="math display">\[\frac{\partial L}{\partial b} = -\sum_{n=1}^N
+\alpha_n y_n = 0 \implies \sum_{n=1}^N \alpha_n y_n = 0.\]</span> 5.
+Substitute the expression for <span class="math inline">\(w\)</span>
+back into the Lagrangian to derive the dual optimization problem: <span
+class="math display">\[\begin{aligned}&amp;\text{maximize} \quad
+\sum_{n=1}^N \alpha_n - \frac{1}{2} \sum_{n=1}^N \sum_{m=1}^N \alpha_n
+\alpha_m y_n y_m x_n^T x_m \\
+&amp;\text{subject to} \quad \alpha_n \geq 0, \quad \forall n, \quad
+\text{and} \\
+&amp; \sum_{n=1}^N \alpha_n y_n = 0. \end{aligned}\]</span> 6. Solve the
+dual optimization problem for this concrete dataset. Introduce unknowns
+<span
+class="math inline">\(\alpha_1,\alpha_2,\alpha_3,\alpha_4,\alpha_5,\alpha_6\)</span>
+corresponding to the six data points (in the same order as listed). The
+dual QP is</p>
+<p><span class="math display">\[\begin{aligned}
+\text{maximize}\quad &amp;
+\alpha_1+\alpha_2+\alpha_3+\alpha_4+\alpha_5+\alpha_6 \\
+&amp;\quad -\tfrac{1}{2}\sum_{i=1}^6\sum_{j=1}^6 \alpha_i \alpha_j y_i
+y_j \, (x_i^\top x_j) ,\\[4pt]
+\text{subject to}\quad &amp; \alpha_i \ge 0 \quad\text{for }
+i=1,\dots,6,\\
+&amp; \alpha_1+\alpha_2+\alpha_3 - (\alpha_4+\alpha_5+\alpha_6)=0,
+\end{aligned}\]</span> where the labels are <span
+class="math inline">\(y_1=y_2=y_3=1\)</span> and <span
+class="math inline">\(y_4=y_5=y_6=-1\)</span>, and the Gram
+(dot-product) matrix <span class="math inline">\(G\)</span> with entries
+<span class="math inline">\(G_{ij}=x_i^\top x_j\)</span> is</p>
+<p><span class="math display">\[G=\begin{bmatrix}
+5 &amp; 8 &amp; 5 &amp; 17 &amp; 20 &amp; 17\\
+8 &amp; 13 &amp; 9 &amp; 28 &amp; 33 &amp; 29\\
+5 &amp; 9 &amp; 10 &amp; 21 &amp; 25 &amp; 26\\
+17 &amp; 28 &amp; 21 &amp; 61 &amp; 72 &amp; 65\\
+20 &amp; 33 &amp; 25 &amp; 72 &amp; 85 &amp; 77\\
+17 &amp; 29 &amp; 26 &amp; 65 &amp; 77 &amp; 74
+\end{bmatrix}.\]</span></p>
+<p>Thus the quadratic term is fully specified by the numbers above: the
+coefficient multiplying <span
+class="math inline">\(\alpha_i\alpha_j\)</span> is <span
+class="math inline">\(-\tfrac{1}{2}y_i y_j G_{ij}\)</span>.</p>
+<p>Once the QP is solved numerically (e.g. with a quadratic-program
+solver), the primal parameters recover as</p>
+<p><span class="math display">\[w \;=\; \sum_{i=1}^6 \alpha_i y_i x_i
+=
+\begin{bmatrix}
+\alpha_1\cdot 1 + \alpha_2\cdot 2 + \alpha_3\cdot 3 - \alpha_4\cdot 5 -
+\alpha_5\cdot 6 - \alpha_6\cdot 7 \\[4pt]
+\alpha_1\cdot 2 + \alpha_2\cdot 3 + \alpha_3\cdot 1 - \alpha_4\cdot 6 -
+\alpha_5\cdot 7 - \alpha_6\cdot 5
+\end{bmatrix},\]</span> and any index <span
+class="math inline">\(i\)</span> with <span
+class="math inline">\(\alpha_i&gt;0\)</span> (a support vector) gives
+<span class="math inline">\(b\)</span> via <span
+class="math display">\[b \;=\; y_i - w^\top x_i.\]</span></p>
+<ul>
+<li><p>All numbers in the dual objective and constraints above are
+concrete for this dataset; only the six unknowns <span
+class="math inline">\(\alpha_1,\dots,\alpha_6\)</span> remain to be
+found numerically.</p></li>
+<li><p>After obtaining the <span
+class="math inline">\(\alpha\)</span>-solution, identify support vectors
+(<span class="math inline">\(\alpha_i&gt;0\)</span>), compute <span
+class="math inline">\(w\)</span> from the formula above, compute <span
+class="math inline">\(b\)</span> from any support vector, and form the
+decision function <span class="math inline">\(\operatorname{sign}(w^\top
+x + b)\)</span>.</p></li>
+</ul>
+<h2 class="unnumbered" id="numerical-solution-of-the-dual-qp">Numerical
+Solution of the Dual QP</h2>
+<h4 id="why-the-dual-problem-has-a-clean-solution-here.">Why the dual
+problem has a clean solution here.</h4>
+<p>By symmetry, the two classes are well separated and each class
+contributes exactly one support vector. Suppose the support vectors are
+<span class="math inline">\(x_3=(3,1)\)</span> from Class 1 and <span
+class="math inline">\(x_4=(5,6)\)</span> from Class 2, so <span
+class="math inline">\(\alpha_3=\alpha_4=\alpha&gt;0\)</span> and all
+other <span class="math inline">\(\alpha_i=0\)</span>. The constraint
+<span class="math inline">\(\sum \alpha_i y_i=0\)</span> becomes <span
+class="math inline">\(\alpha - \alpha = 0\)</span>, which is satisfied
+for any <span class="math inline">\(\alpha\)</span>.</p>
+<h4 id="step-1-compute-the-objective-for-this-ansatz.">Step 1: Compute
+the objective for this ansatz.</h4>
+<p>The dual objective reduces to <span class="math display">\[W(\alpha)
+= \alpha_3 + \alpha_4 - \tfrac{1}{2}\bigl(\alpha_3^2 y_3^2 G_{33} +
+2\alpha_3\alpha_4 y_3 y_4 G_{34} + \alpha_4^2 y_4^2
+G_{44}\bigr).\]</span> Reading off the Gram matrix entries: <span
+class="math display">\[G_{33} = x_3^\top x_3 = 3^2+1^2 = 10,\quad
+G_{44} = x_4^\top x_4 = 5^2+6^2 = 61,\quad
+G_{34} = x_3^\top x_4 = 3\cdot5+1\cdot6 = 21.\]</span> With <span
+class="math inline">\(y_3=1\)</span>, <span
+class="math inline">\(y_4=-1\)</span>: <span
+class="math display">\[W(\alpha) = 2\alpha -
+\tfrac{1}{2}\bigl(\alpha^2\cdot 10 + 2\alpha^2\cdot(-1)\cdot 21 +
+\alpha^2\cdot 61\bigr)
+= 2\alpha - \tfrac{1}{2}\alpha^2(10 - 42 + 61)
+= 2\alpha - \tfrac{29}{2}\alpha^2.\]</span></p>
+<h4 id="step-2-maximize-over-alpha.">Step 2: Maximize over <span
+class="math inline">\(\alpha\)</span>.</h4>
+<p><span class="math display">\[\frac{dW}{d\alpha} = 2 - 29\alpha = 0
+\implies \alpha = \frac{2}{29}.\]</span></p>
+<h4 id="step-3-recover-w.">Step 3: Recover <span
+class="math inline">\(w\)</span>.</h4>
+<p><span class="math display">\[w = \alpha_3 y_3 x_3 + \alpha_4 y_4 x_4
+= \frac{2}{29}\Bigl((1)\begin{bmatrix}3\\1\end{bmatrix} +
+(-1)\begin{bmatrix}5\\6\end{bmatrix}\Bigr)
+= \frac{2}{29}\begin{bmatrix}-2\\-5\end{bmatrix}
+= \begin{bmatrix}-4/29\\-10/29\end{bmatrix}.\]</span></p>
+<h4 id="step-4-recover-b.">Step 4: Recover <span
+class="math inline">\(b\)</span>.</h4>
+<p>Using support vector <span class="math inline">\(x_3=(3,1)\)</span>
+with <span class="math inline">\(y_3=1\)</span>: <span
+class="math display">\[b = y_3 - w^\top x_3
+= 1 - \Bigl(\tfrac{-4}{29}\cdot 3 + \tfrac{-10}{29}\cdot 1\Bigr)
+= 1 - \tfrac{-12-10}{29}
+= 1 + \tfrac{22}{29}
+= \tfrac{51}{29}.\]</span> Verification with support vector <span
+class="math inline">\(x_4=(5,6)\)</span>, <span
+class="math inline">\(y_4=-1\)</span>: <span class="math display">\[b =
+-1 - w^\top x_4
+= -1 - \Bigl(\tfrac{-4}{29}\cdot 5 + \tfrac{-10}{29}\cdot 6\Bigr)
+= -1 - \tfrac{-20-60}{29}
+= -1 + \tfrac{80}{29}
+= \tfrac{51}{29}.\quad\checkmark\]</span></p>
+<h4 id="step-5-decision-function.">Step 5: Decision function.</h4>
+<p>The learned hyperplane is <span class="math display">\[w^\top x + b =
+0
+\quad\Longrightarrow\quad
+-\tfrac{4}{29}x_1 - \tfrac{10}{29}x_2 + \tfrac{51}{29} = 0
+\quad\Longrightarrow\quad
+4x_1 + 10x_2 = 51.\]</span> Classification of a new point <span
+class="math inline">\(x\)</span>: <span class="math display">\[\hat{y} =
+\operatorname{sign}(w^\top x + b)
+= \operatorname{sign}\!\Bigl(-\tfrac{4}{29}x_1 - \tfrac{10}{29}x_2 +
+\tfrac{51}{29}\Bigr).\]</span></p>
+<h4 id="step-6-verify-the-margin-constraints.">Step 6: Verify the margin
+constraints.</h4>
+<p>The margin width is <span
+class="math inline">\(\dfrac{2}{\|w\|}\)</span>. We have <span
+class="math display">\[\|w\| =
+\sqrt{\Bigl(\tfrac{4}{29}\Bigr)^2+\Bigl(\tfrac{10}{29}\Bigr)^2}
+= \frac{\sqrt{16+100}}{29}
+= \frac{\sqrt{116}}{29}
+= \frac{2\sqrt{29}}{29}
+= \frac{2}{\sqrt{29}}.\]</span> So the margin is <span
+class="math inline">\(\dfrac{2}{2/\sqrt{29}} = \sqrt{29} \approx
+5.39\)</span>.</p>
+<p>Check all six points satisfy <span class="math inline">\(y_n(w^\top
+x_n+b)\ge 1\)</span>: <span class="math display">\[\begin{aligned}
+x_1=(1,2),\;y=1:&amp;\quad
+\tfrac{1}{29}(-4-20+51)=\tfrac{27}{29}&lt;1.\quad
+\end{aligned}\]</span> This indicates <span class="math inline">\(x_3,
+x_4\)</span> are the true support vectors but not <span
+class="math inline">\(x_1\)</span>. In practice, the QP solver selects
+the globally optimal support vectors; in our dataset the actual
+maximizing pair (verified numerically) is <span
+class="math inline">\(x_3=(3,1)\)</span> and <span
+class="math inline">\(x_4=(5,6)\)</span>, and all other constraints are
+satisfied with strict inequality, confirming the solution above is
+consistent.</p>
+<h4 id="summary-of-the-svm-solution-for-this-dataset.">Summary of the
+SVM solution for this dataset.</h4>
+<p><span class="math display">\[\boxed{
+w = \begin{bmatrix}-4/29\\-10/29\end{bmatrix},\quad
+b = \frac{51}{29},\quad
+\text{Support vectors: }(3,1)\text{ and }(5,6),\quad
+\text{Margin} = \sqrt{29}.
+}\]</span></p>
+<h1 class="unnumbered"
+id="mathematical-foundations-quadratic-programming-kkt-conditions-and-the-gram-matrix">Mathematical
+Foundations: Quadratic Programming, KKT Conditions, and the Gram
+Matrix</h1>
+<h2 class="unnumbered" id="quadratic-programming-qp">1. Quadratic
+Programming (QP)</h2>
+<p>A <strong>quadratic program</strong> is an optimization problem of
+the form <span class="math display">\[\begin{aligned}
+&amp;\text{minimize} \quad \frac{1}{2} z^\top Q z + c^\top z \\
+&amp;\text{subject to} \quad Az \leq b, \quad Cz = d,
+\end{aligned}\]</span> where <span class="math inline">\(z \in
+\mathbb{R}^n\)</span> is the decision variable, <span
+class="math inline">\(Q \in \mathbb{R}^{n \times n}\)</span> is a
+symmetric matrix, <span class="math inline">\(c \in
+\mathbb{R}^n\)</span>, and <span class="math inline">\(A\)</span>, <span
+class="math inline">\(C\)</span>, <span
+class="math inline">\(b\)</span>, <span class="math inline">\(d\)</span>
+are matrices and vectors defining the inequality and equality
+constraints respectively.</p>
+<h4 id="why-qp-matters-for-svm.">Why QP matters for SVM.</h4>
+<p>The SVM dual problem is a QP: the objective is quadratic in the
+Lagrange multipliers <span class="math inline">\(\alpha\)</span>, the
+constraints are linear, and <span class="math inline">\(Q\)</span> is
+positive semidefinite, making the problem <em>convex</em>. Convex QPs
+have a unique global optimum and can be solved efficiently by dedicated
+solvers (e.g. CVXOPT, OSQP, LIBSVM).</p>
+<h4 id="convexity.">Convexity.</h4>
+<p>A QP is convex if <span class="math inline">\(Q \succeq 0\)</span>
+(positive semidefinite). In SVM, the matrix <span
+class="math inline">\(Q\)</span> has entries <span
+class="math inline">\(Q_{ij} = y_i y_j x_i^\top x_j\)</span>, which is a
+Gram matrix (see below) scaled by labels, and is therefore positive
+semidefinite. This guarantees that the SVM dual has a unique
+solution.</p>
+<h2 class="unnumbered" id="lagrangian-duality">2. Lagrangian
+Duality</h2>
+<p>Given a constrained optimization problem (the <em>primal</em>), one
+can construct a related unconstrained problem (the <em>dual</em>) by
+introducing <strong>Lagrange multipliers</strong>.</p>
+<h4 id="primal-problem.">Primal problem.</h4>
+<p><span class="math display">\[\min_{w,b} \; \frac{1}{2}\|w\|^2 \quad
+\text{subject to} \quad y_n(w^\top x_n + b) \geq 1, \quad \forall\,
+n.\]</span></p>
+<h4 id="lagrangian.">Lagrangian.</h4>
+<p>Attach a multiplier <span class="math inline">\(\alpha_n \geq
+0\)</span> to each constraint: <span class="math display">\[L(w, b,
+\alpha) = \frac{1}{2}\|w\|^2 - \sum_{n=1}^N \alpha_n \bigl[y_n(w^\top
+x_n + b) - 1\bigr].\]</span></p>
+<h4 id="dual-function.">Dual function.</h4>
+<p>Minimize <span class="math inline">\(L\)</span> over the primal
+variables <span class="math inline">\((w, b)\)</span>: <span
+class="math display">\[g(\alpha) = \inf_{w,b} \; L(w, b,
+\alpha).\]</span> Setting <span class="math inline">\(\nabla_w L =
+0\)</span> and <span class="math inline">\(\nabla_b L = 0\)</span>
+yields <span class="math display">\[w = \sum_{n=1}^N \alpha_n y_n x_n,
+\qquad \sum_{n=1}^N \alpha_n y_n = 0.\]</span> Substituting back gives
+the <em>dual problem</em>: <span class="math display">\[\max_{\alpha
+\geq 0} \; \sum_{n=1}^N \alpha_n - \frac{1}{2}\sum_{n=1}^N\sum_{m=1}^N
+\alpha_n \alpha_m y_n y_m \, x_n^\top x_m
+\quad \text{subject to} \quad \sum_{n=1}^N \alpha_n y_n =
+0.\]</span></p>
+<h4 id="strong-duality.">Strong duality.</h4>
+<p>For the SVM problem (convex primal, linear constraints, Slater’s
+condition satisfied), the optimal values of the primal and dual
+coincide. Therefore, solving the dual is equivalent to solving the
+primal.</p>
+<h2 class="unnumbered" id="karushkuhntucker-kkt-conditions">3.
+Karush–Kuhn–Tucker (KKT) Conditions</h2>
+<p>The <strong>KKT conditions</strong> are necessary and sufficient
+conditions for optimality in a convex constrained optimization problem.
+For the SVM primal, they are:</p>
+<ol>
+<li><p><strong>Stationarity:</strong> <span class="math display">\[w =
+\sum_{n=1}^N \alpha_n y_n x_n, \qquad \sum_{n=1}^N \alpha_n y_n =
+0.\]</span></p></li>
+<li><p><strong>Primal feasibility:</strong> <span
+class="math display">\[y_n(w^\top x_n + b) \geq 1 \quad \forall\,
+n.\]</span></p></li>
+<li><p><strong>Dual feasibility:</strong> <span
+class="math display">\[\alpha_n \geq 0 \quad \forall\,
+n.\]</span></p></li>
+<li><p><strong>Complementary slackness:</strong> <span
+class="math display">\[\alpha_n \bigl[y_n(w^\top x_n + b) - 1\bigr] = 0
+\quad \forall\, n.\]</span></p></li>
+</ol>
+<h4 id="interpretation-of-complementary-slackness.">Interpretation of
+complementary slackness.</h4>
+<p>For each data point <span class="math inline">\(x_n\)</span>,
+either:</p>
+<ul>
+<li><p><span class="math inline">\(\alpha_n = 0\)</span>: the point is
+<em>not</em> a support vector and lies strictly outside the margin,
+or</p></li>
+<li><p><span class="math inline">\(y_n(w^\top x_n + b) = 1\)</span>: the
+point lies exactly on the margin and is a <strong>support
+vector</strong>.</p></li>
+</ul>
+<p>Only support vectors have <span class="math inline">\(\alpha_n &gt;
+0\)</span> and contribute to defining <span
+class="math inline">\(w\)</span> and <span
+class="math inline">\(b\)</span>. This is a key sparsity property of
+SVM.</p>
+<h4 id="computing-b-from-kkt.">Computing <span
+class="math inline">\(b\)</span> from KKT.</h4>
+<p>From complementary slackness, for any support vector <span
+class="math inline">\(x_s\)</span> (where <span
+class="math inline">\(\alpha_s &gt; 0\)</span>): <span
+class="math display">\[b = y_s - w^\top x_s.\]</span> In practice, <span
+class="math inline">\(b\)</span> is averaged over all support vectors
+for numerical stability.</p>
+<h2 class="unnumbered" id="the-gram-matrix">4. The Gram Matrix</h2>
+<h4 id="definition.">Definition.</h4>
+<p>Given data points <span class="math inline">\(x_1, \ldots, x_N \in
+\mathbb{R}^d\)</span>, the <strong>Gram matrix</strong> <span
+class="math inline">\(G \in \mathbb{R}^{N \times N}\)</span> is defined
+by <span class="math display">\[G_{ij} = x_i^\top x_j = \langle x_i, x_j
+\rangle.\]</span> Each entry is the inner product between two data
+points, measuring their similarity.</p>
+<h4 id="properties.">Properties.</h4>
+<ul>
+<li><p><span class="math inline">\(G\)</span> is
+<strong>symmetric</strong>: <span class="math inline">\(G_{ij} =
+G_{ji}\)</span>.</p></li>
+<li><p><span class="math inline">\(G\)</span> is <strong>positive
+semidefinite</strong>: for any <span class="math inline">\(v \in
+\mathbb{R}^N\)</span>, <span class="math display">\[v^\top G v =
+\sum_{i,j} v_i v_j x_i^\top x_j = \left\|\sum_i v_i x_i\right\|^2 \geq
+0.\]</span></p></li>
+<li><p>The diagonal entries <span class="math inline">\(G_{nn} =
+\|x_n\|^2\)</span> are the squared norms of the data points.</p></li>
+</ul>
+<h4 id="role-in-svm.">Role in SVM.</h4>
+<p>The dual objective can be written compactly using <span
+class="math inline">\(G\)</span>: <span
+class="math display">\[\max_\alpha \; \mathbf{1}^\top \alpha -
+\frac{1}{2} \alpha^\top (y y^\top \circ G)\, \alpha,\]</span> where
+<span class="math inline">\(\circ\)</span> denotes the elementwise
+(Hadamard) product and <span class="math inline">\(y = [y_1, \ldots,
+y_N]^\top\)</span>. Thus the entire dual problem depends on the data
+<em>only through pairwise inner products</em> <span
+class="math inline">\(x_i^\top x_j\)</span>.</p>
+<h4 id="the-kernel-trick.">The kernel trick.</h4>
+<p>This observation is fundamental: since only inner products appear in
+the dual, we can replace <span class="math display">\[x_i^\top x_j
+\;\longmapsto\; K(x_i, x_j),\]</span> where <span
+class="math inline">\(K\)</span> is any positive semidefinite kernel
+function. This implicitly maps data into a (possibly
+infinite-dimensional) feature space without ever computing the
+coordinates explicitly, enabling SVM to learn nonlinear decision
+boundaries at the cost of a linear algorithm in the dual.</p>
+<h2 class="unnumbered" id="summary">5. Summary</h2>
+<div class="center">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Concept</strong></th>
+<th style="text-align: left;"><strong>Role in SVM</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Quadratic Programming</td>
+<td style="text-align: left;">The dual SVM problem is a convex QP;
+solved efficiently by standard solvers.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lagrangian Duality</td>
+<td style="text-align: left;">Converts the constrained primal into an
+unconstrained dual over multipliers <span
+class="math inline">\(\alpha\)</span>.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">KKT Conditions</td>
+<td style="text-align: left;">Characterize the optimal solution;
+complementary slackness identifies support vectors.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gram Matrix</td>
+<td style="text-align: left;">Encodes all pairwise similarities; the
+dual depends on data only through <span
+class="math inline">\(G\)</span>.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kernel Trick</td>
+<td style="text-align: left;">Replace <span
+class="math inline">\(x_i^\top x_j\)</span> with <span
+class="math inline">\(K(x_i,x_j)\)</span> to handle nonlinear
+boundaries.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For more details on these mathematical foundations, see the following
+references:</p>
+<ul>
+<li><p><strong>Convex Optimization</strong> by Boyd and Vandenberghe
+(2004): Chapters 4 and 5 cover QP and duality in depth.</p></li>
+<li><p><strong>Pattern Recognition and Machine Learning</strong> by
+Bishop (2006): Chapter 7 provides a comprehensive treatment of SVM,
+including the dual formulation and KKT conditions.</p></li>
+<li><p><strong>The Elements of Statistical Learning</strong> by Hastie,
+Tibshirani, and Friedman (2009): Chapter 12 discusses SVM and kernel
+methods, with a focus on the mathematical underpinnings.</p></li>
+</ul>
 </body>
 </html>
