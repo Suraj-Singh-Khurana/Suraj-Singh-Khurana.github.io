@@ -7,7 +7,6 @@ permalink: /teaching/fic-117-linear-algebra-ode
 venue: "SRM University AP"
 date: 2026-01-01
 location: "Andhra Pradesh, India"
-status: "Ongoing"
 
 ---
 

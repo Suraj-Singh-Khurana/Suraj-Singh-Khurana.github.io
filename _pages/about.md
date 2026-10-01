@@ -11,4 +11,4 @@ redirect_from:
 
 [Research](/publications/)  
 [Teaching](/teaching/)  
-[CV](/cv/)
+[Profile](/cv/)

@@ -86,6 +86,9 @@ Previously, I was a post-doctoral fellow at Indian Institute of Technology Kanpu
 - Short-term course on *Transcendental Numbers and Special Values of Dirichlet Series*, GIAN 2017  
 - Course on *Introduction to Probabilistic Number Theory*, IMS Chennai, 2018  
 - Talk: *Some results for L-functions in Selberg Class*, Young Researchers Meeting, IIT Kanpur, 2022  
+- One Week Workshop on *Music, Maths, Science and Computing* [Online], XIM University, Bhubaneswar, June 16–20, 2025.
+- Refresher Course in Information Communication Technology (ICT), UGC-MMTTC, Punjabi University Patiala, June 10–25, 2026
+- 5-Day Training Program (Hybrid) "Modern Era Cybersecurity: A training on Introduction to Quantum Computing and Post-Quantum Cryptography", covering Quantum Computing, Quantum Machine Learning and Post-Quantum Cryptography, Department of Computer Science & DCEE, University of Delhi, September 22–26, 2026. *(MeitY-sponsored)*
 
 ### International
 - CIMPA-ICTP Research School on *Artin L-functions*, Nesin Mathematics Village, Turkey, 2017  
@@ -93,9 +96,20 @@ Previously, I was a post-doctoral fellow at Indian Institute of Technology Kanpu
 - Talk: *Number Theory: Arithmetic, Diophantine and Transcendence*, IIT Ropar, 2017  
 - Emil Artin International WAMS Research School, Yerevan State University, Armenia, 2018  
 - Symposium on Analytic Number Theory, Cetraro, Italy, 2019  
-- Invited speaker: *Celebrating Number Theory in India*, IISER Pune, 2024  
-- Contributed talk: 33èmes Journées Arithmétiques, University of Luxembourg, 2025  
-- CIMPA School on L-functions and Automorphic forms, IIT Ropar, 2025  
+- Invited speaker: *Celebrating Number Theory in India*, IISER Pune, December 09–13, 2024  
+- Contributed talk: 33èmes Journées Arithmétiques, University of Luxembourg, Jun 30 – July 04, 2025  
+- CIMPA-NCM School on Automorphic L-Functions, IIT Ropar, June 30 – July 11, 2025  
+- IQM Quantum School, Intensive Quantum Computing Training, August 25–27, 2026.
+- Accepted to Sage Days 131 (SageMath Workshop), Barrier Lake Field Station, Kananaskis, Alberta, Canada, June 7–12, 2026. (Could not attend due to delayed visa)
+- Short Communication titled "On irrationality criteria for certain constants" at ICM 2026 (International Congress of Mathematicians), Philadelphia, USA, July 23–30, 2026. Also moderated a session. *(International Travel Support Recipient, Funded by Simons Foundation via AMS)*
+
+---
+
+## Outreach & Organisation
+
+- Local Organising Committee, [CIMPA-NCM School on Automorphic L-Functions](https://www.mathconf.org/alfiitr2024), IIT Ropar, June 30 – July 11, 2025.
+- Organising Committee, [LaDiMe 2025](https://www.srmap.edu.in/la-di-me-2025/) (Language Diversity and Mathematics Education), SRM University AP, November 25–28, 2025.
+- Organising Committee, [CHETNA 3.0](https://www.srmap.edu.in/chetna-3-0/) (Awakening Mathematical Minds – intensive summer programme for undergraduate students), SRM University AP, May 28–29, 2026.
 
 ---
 
@@ -124,20 +138,26 @@ Previously, I was a post-doctoral fellow at Indian Institute of Technology Kanpu
 
 ## Technology Skills
 
-**Languages & Tools:** Python, C, HTML, LaTeX, SageMath  
-**Software:** Microsoft Office, VS Code, Git, GitHub, Jupyter Notebook  
+- **Programming:** Python, C, SageMath, MATLAB, Mathematica, HTML, LaTeX
+- **Data Science:** NumPy, Pandas, Matplotlib, Scikit-learn, Jupyter Notebook
+- **AI / ML:** Supervised & Unsupervised Learning, Neural Networks (basics)
+- **Quantum Computing:** Quantum Gates & Circuits, Variational Algorithms, Quantum Machine Learning
+- **Cryptography:** Number-theoretic, RSA, Elliptic Curve, Post-Quantum
+- **Dev Tools:** Git, GitHub, VS Code, Microsoft Office
 
-**Online Certifications:**  
-1. [Data Science Methodology (Coursera)](https://www.coursera.org/account/accomplishments/certificate/PQ9A3BMCCLLM) – Credential ID: PQ9A3BMCCLLM  
-2. [Tools for Data Science (Coursera)](https://www.coursera.org/account/accomplishments/certificate/VQTAQZYEHKHV) – Credential ID: VQTAQZYEHKHV  
-3. [Getting Started with Git and GitHub (Coursera)](https://www.coursera.org/account/accomplishments/certificate/DXTH7LNNZDZG) – Credential ID: DXTH7LNNZDZG  
-4. [What is Data Science? (Coursera)](https://www.coursera.org/account/accomplishments/certificate/NBWWAEYZJAGD) – Credential ID: NBWWAEYZJAGD  
-5. [Machine Learning (Coursera)](https://www.coursera.org/account/accomplishments/certificate/THYMEYKC98VN) – Credential ID: THYMEYKC98VN  
-6. [Mathematics for Machine Learning: Linear Algebra (Coursera)](https://www.coursera.org/account/accomplishments/certificate/U36CRS2VKCCZ) – Credential ID: U36CRS2VKCCZ  
-7. [Mathematics for Machine Learning: Multivariate Calculus (Coursera)](https://www.coursera.org/account/accomplishments/certificate/8TATKQH86QC6) – Credential ID: 8TATKQH86QC6  
-8. [Number Theory and Cryptography (Coursera)](https://www.coursera.org/account/accomplishments/certificate/83P2JT5MZD45) – Credential ID: 83P2JT5MZD45  
-9. [FinTech Engineering Virtual Experience Program (Goldman Sachs)](https://www.linkedin.com/learning/certificates/LQnEGJEP2dAbFMjJ) – Credential ID: LQnEGJEP2dAbFMjJ
- 
+**Certifications & Training:**  
+1. Erdős Institute: Spring 2023 Data Science Boot Camp (June 2023)
+2. [Machine Learning (Coursera)](https://www.coursera.org/account/accomplishments/certificate/THYMEYKC98VN) – Credential ID: THYMEYKC98VN
+3. Getting Started with Git and GitHub (Coursera) – Credential ID: DXTH7LNNZDZG
+4. Number Theory and Cryptography (Coursera) – Credential ID: 83P2JT5MZD45
+5. IQM Academy: IQM Quantum School (August 2026) – Certificate ID: ae280fcd-81be-40a8-b1a0-99eaf0fa1a37
+6. University of Delhi (MeitY-sponsored): Modern Era Cybersecurity – Introduction to Quantum Computing and Post-Quantum Cryptography (September 2026) – Certificate No: DUCS/MCTP/T001/0065
+
+---
+
+## Professional Memberships
+
+- Member, American Mathematical Society (AMS), since July 27, 2026.
 
 ---
 
@@ -161,7 +181,7 @@ Previously, I was a post-doctoral fellow at Indian Institute of Technology Kanpu
 - Director Fellowship, IIT Ropar (2019)  
 - NBHM Postdoctoral Fellowship (2021–2023)  
 - International Travel Grant from DST for JMM (Boston, USA) – not availed  
-- International Travel Grant from AMS for ICM (Philadelphia, USA) – 2026  
+- International Travel Support from AMS for ICM 2026 (Philadelphia, USA) (Funded by Simons Foundation)
 
 ---
 
